@@ -1,0 +1,877 @@
+---
+filters:
+  - roughnotation
+format:
+  revealjs:
+    # appearance:
+    #   appearparents: true
+    code-line-numbers: false
+    # code-link: false
+    # code-copy: false
+    # callout-appearance: simple
+    # syntax-definitions:
+    #   - ./docs/python.xml
+    # scrollable: true
+    title-block-style: none
+    slide-number: c
+    title-slide-style: default
+    chalkboard:
+      buttons: false
+    auto-animate: true
+    touch: true
+    pause: false
+    footnotes-hover: true
+    citations-hover: true
+    preview-links: true
+    controls-tutorial: true
+    controls: false
+    logo: "https://raw.githubusercontent.com/saforem2/llm-lunch-talk/main/docs/assets/anl.svg"
+    history: false
+    highlight-style: "atom-one"
+    css:
+      - css/default.css
+      - css/reset.css
+    theme:
+      - css/common.scss
+      - css/light.scss
+      - css/syntax-light.scss
+      # - css/callouts.scss
+      - css/reveal.scss
+
+    # css:
+    #   - css/reset.css
+    #   # - css/default.css
+    #   # - css/callouts-base.css
+    # theme:
+    #   - css/common.scss
+    #   - css/light.scss
+    #   - css/syntax-light.scss
+    #   - css/callouts.scss
+    #   - css/reveal.scss
+
+      # - css/callout-cards.scss
+    #   # - white
+    #   # - css/light.scss
+    #   - css/common.scss
+    #   - css/syntax-light.scss
+    self-contained: false
+    embed-resources: false
+    self-contained-math: false
+    center: true
+    default-image-extension: svg
+    code-overflow: scroll
+    html-math-method: katex
+    fig-align: center
+    mermaid:
+      theme: neutral
+    # revealjs-plugins:
+    #   - RevealMenu
+    # menu:
+    #   markers: true
+    #   themes:
+    #     - name: Dark
+    #       theme: css/dark.scss
+    #       highlightTheme: css/syntax-dark.scss
+    #     - name: Light
+    #       theme: css/light.scss
+    #       highlightTheme: css/syntax-light.scss
+    # themesPath: './docs/css/'
+  gfm:
+    output-file: "README.md"
+---
+
+# Parallel Training Techniques
+
+::: {layout="[60,-5, 35]" layout-valign="center" style="display: flex; align-items:flex-end;"}
+
+::: {.col1}
+
+[**[AI for Science Training Series](https://github.com/argonne-lcf/llm-workshop)**[^1]]{.dim-text}  
+[Argonne National Laboratory]{.dim-text}  
+<br>
+
+[[{{< bi person-badge >}}Sam Foreman](https://samforeman.me)]{style="font-weight: 600;"}  
+[\[2024-03-12\]]{.dim-text style="font-size: 0.8em;"}  
+
+[^1]: on Supercomputers!!
+
+<br>
+
+::: {style="font-size: 0.75em;"}
+
+- [{{< iconify line-md home-md-twotone-alt >}}`argonne-lcf/`](https://github.com/argonne-lcf/)
+  - [{{< iconify line-md github-loop >}}`ai-science-training-series/`](https://github.com/argonne-lcf/ai-science-training-series)
+    - [{{< iconify line-md document >}}`06_parallel_training_methods/`](https://github.com/argonne-lcf/ai-science-training-series/blob/main/06_parallel_training_methods/README.md)
+
+- [{{< iconify line-md person >}}`saforem2/`](https://github.com/saforem2)
+  - [{{< iconify line-md github-loop >}}`parallel-training-slides`](https://github.com/saforem2/parallel-training-slides)
+    - [{{< iconify line-md image-twotone >}}\[**slides**\]](https://saforem2.github.io/parallel-training-slides/) [{{< iconify line-md github-twotone >}}\[**GitHub**\]](https://github.com/saforem2/parallel-training-slides/)
+  <!-- - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk) -->
+  <!-- - [{{< iconify line-md github-loop >}} `llm-workshop-talk`] -->
+    <!-- - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk)  -->
+
+:::
+
+:::
+
+::: {.col2 style="font-size: 0.6em; text-align: center;"}
+
+::: {#fig-3d-parallel style="text-align: center;"}
+[![](https://cdn-lfs.huggingface.co/datasets/huggingface/documentation-images/315020969c2ee0750b0d3b3815ee7e4ab321c4723f81de977ab6320f28715485?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27parallelism-deepspeed-3d.png%3B+filename%3D%22parallelism-deepspeed-3d.png%22%3B&response-content-type=image%2Fpng&Expires=1710014172&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcxMDAxNDE3Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9odWdnaW5nZmFjZS9kb2N1bWVudGF0aW9uLWltYWdlcy8zMTUwMjA5NjljMmVlMDc1MGIwZDNiMzgxNWVlN2U0YWIzMjFjNDcyM2Y4MWRlOTc3YWI2MzIwZjI4NzE1NDg1P3Jlc3BvbnNlLWNvbnRlbnQtZGlzcG9zaXRpb249KiZyZXNwb25zZS1jb250ZW50LXR5cGU9KiJ9XX0_&Signature=LfXYJ8on2VB643vlUqFHhKR4E0gp1D8lk8kZXZuNBJGToBcCOOdsSAHrl5DLTO6g0PkYzGOoRfN2bDlHQ7rxBEo%7E%7EQ8VJutDH3BP6ShhZ2nSva4MFtdMefLfwMRzjFZCEB3t4H4Q0-Hb5Z6Dxv4KvkUNhEk1ee6xW3Wcfz5Xo9TJ-wC-J7oVm%7ErPQdlphL8FMBI67W1HfgZQCTGu6iIdK6Hv0XOXB4T%7E89PuVVn0Wlf6A7QqaMVcll51DzdA-IoG%7E2Q5I-5tjyVH%7EhX3zsIbw7%7EZbxsftgajEbJQcHUrqF2ZIRq9HA7wlD3GQDyhG8gXNNVOPqrWLj4sTPs9IuBm%7EQ__&Key-Pair-Id=KVTP0A1DKRTAX)]{.stretch}
+
+[Image from [🤗 Transformers / Efficient Training on Multiple GPUs](https://huggingface.co/docs/transformers/en/perf_train_gpu_many)]{.dim-text}
+:::
+
+:::
+
+:::
+
+[^llm-animation]: [{{< iconify line-md github-loop >}}`Hannibal046/Awesome-LLM`](https://github.com/Hannibal046/Awesome-LLM)
+
+# AI 🤝 Compute {.centeredslide height="100%"}
+
+![](./assets/ai-and-compute-all.png){width="70%"}
+
+::: {.dim-text style="font-size: 0.55em;"}
+
+\[...\] since 2012, the amount of \[AI\] compute used has been increasing exponentially with a
+> 34-month doubling time[^moore], or \[**300,000**x\].
+
+:::
+
+[^moore]: By comparison, Moore’s Law had a 2-year doubling period, and would have doubled 7x since 2012
+
+
+# AI 🤝 Compute \[Modern Era\] {.centeredslide height="100%"}
+
+::: {#fig-ai-and-copute-modern}
+
+![](./assets/ai-and-compute-modern-log.png){width="90%"}
+
+\[**300,000**x since 2012\] vs \[7x for Moore's Law\]
+
+:::
+
+
+# Single GPU Training {.centeredslide}
+
+::: {#fig-single-gpu style="text-align: center;"}
+
+![](./assets/single-gpu-step-1.drawio.svg){width="90%"}
+
+**SLOW** !!, model size determined by GPU memory
+:::
+
+# Collective Communication {.smaller}
+
+Typically, we assign 1 `rank` to each GPU (or `accelerator`), i.e. `rank` $\in$ `[0, 1, ...,
+WORLD_SIZE-1]`.
+
+::: {.panel-tabset}
+
+
+### `AllReduce`
+
+- Perform _reductions_ on data (e.g. `sum`, `min`, `max`) across ranks, send result back to everyone
+
+::: {#fig-allreduce}
+
+![](./assets/collective-allreduce-sum.drawio.svg){width="50%"}
+
+All-Reduce operation: each rank receives the reduction of input values across ranks.
+
+:::
+
+### `Reduce`
+
+- Perform a _reduction_ on data across ranks, send to individual
+
+::: {#fig-reduce}
+
+![](./assets/collective-reduce-sum.drawio.svg){width="50%"}
+
+Reduce operation: one rank receives the reduction of input values across ranks
+
+:::
+
+
+### `Broadcast`
+
+- `broadcast` (_send_) a tensor <code>$x$</code> from one rank to all ranks
+
+::: {#fig-broadcast}
+
+![](./assets/collective-broadcast.drawio.svg){width="50%"}
+
+:::
+
+### `AllGather`
+
+- Gathers tensors from the whole group in a list.
+
+::: {#fig-allgather}
+
+![](./assets/collective-allgather.drawio.svg){width="50%"}
+
+:::
+
+### `Scatter`
+
+- Scatters a list of tensors to the whole group
+
+::: {#fig-scatter}
+
+![](./assets/collective-scatter.drawio.svg){width="50%"}
+
+:::
+
+### `ReduceScatter`
+
+- Reduces, then scatters a list of tensors to all processes in a group.
+
+::: {#fig-reducescatter}
+
+![](./assets/collective-reducescatter.drawio.svg){width="50%"}
+
+:::
+
+:::
+
+
+# Collective Operations
+
+
+::: {.callout-warning icon=false title="⌛ Timeouts"}
+
+- Collective operations have to be called for each `rank` to form a complete collective operation.
+    - Failure to do so will result in other ranks waiting **indefinitely**
+
+:::
+
+
+# Why Distributed Training?
+
+- Splitting data across workers $\longrightarrow$ larger batch size[^mbs]
+  - \[`micro_batch_size = 1`\] $\times$ \[`N` GPUs\] $\rightarrow$ [<b><code>global_batch_size = N</code></b>]
+- Smooth loss landscape
+- Improved gradient estimators
+- Less iterations needed for same number of epochs
+  - May need to train for more epochs if another change is not made
+  - e.g. scaling learning rate
+- See [Large Batch Training of Convolutional Networks](https://arxiv.org/abs/1708.03888)
+
+[^mbs]: `micro_batch_size` = batch_size **per** GPU
+
+# Recent Progress
+
+
+::: {#tbl-batch-scaling style="font-size:0.7em; font-family: monospace;"}
+
+|  Year  |  Author  | Batch Size |  Processor | \# Processors |       Time       | Accuracy |
+|:------:|:--------:|:----------:|:----------:|:-------------:|:----------------:|:--------:|
+|  2016  |    He    |     256    | Tesla P100 |       8       |      29 Hour     |  75.30%  |
+|  2019  | Yamazaki |   81,920   | Tesla V100 |  [2048]{.red} | [1.2 Min]{.blue} |  75.08%  |
+
+: Batch-Size-Scaling {.striped .hover}
+
+:::
+
+<!-- |                                 |             Goyal et al.             |               8192               |                 Tesla P100                  |             Caffe 2             |               1 Hour               |                            76.3%         | -->
+<!-- |                                 |             Smith et al.             |         8192 ->  16,384          |                full TPU pod                 |           TensorFlow            |              30 Mins               |                            76.1%         | -->
+<!-- |                                 |             Akiba et al.             |              32,768              |              Tesla P100 x1024               |             Chainer             |              15 Mins               |                            74.9%         | -->
+<!-- |                                 |              Jia et al.              |              65,536              |              Tesla P40  x2048               |           TensorFLow            |              6.6 Mins              |                            75.8%         | -->
+<!-- |                                 |             Ying et al.              |              65,536              |                TPU v3 x1024                 |           TensorFlow            |              1.8 Mins              |                            75.2%         | -->
+<!-- |                                 |            Mikami et al.             |              55,296              |              Tesla V100 x3456               |               NNL               |              2.0 Mins              |                           75.29%         | -->
+
+# Data Parallel Training
+
+<!-- ::: {layout="[40,-5, 50]" layout-valign="center" style="display: flex; align-items:flex-end;"} -->
+<!---->
+<!-- ::: {.col1} -->
+<!---->
+<!-- ::: -->
+
+::: {#fig-multi-gpu-ddp}
+
+![](./assets/multi-gpu-ddp.drawio.svg)
+
+:::
+
+<!-- ::: -->
+
+
+# Data Parallel Training
+
+
+- 🔗 Links:
+  - [PyTorch Distributed Overview](https://pytorch.org/tutorials/beginner/dist_overview.html)
+  - [Distributed Data Parallel — PyTorch master documentation](https://pytorch.org/docs/master/notes/ddp.html)
+  - [🤗 Efficient Training on Multiple GPUs](https://huggingface.co/docs/transformers/en/perf_train_gpu_many)
+  - [Getting Started - DeepSpeed](https://www.deepspeed.ai/getting-started/)
+
+# Data Parallel Training
+
+::: {#fig-data-parallel}
+![](./assets/data-parallel-light.svg)
+:::
+
+# Data Parallel Training
+
+::: {layout="[45,-5,50]" layout-valign="center" style="display: flex; align-items:flex-end;"}
+
+::: {.col1 style="font-size:0.75em;"}
+
+- Typically easier to implement
+- Existing frameworks ([Horovod](https://horovod.readthedocs.io/en/stable/index.html), [DeepSpeed](https://github.com/microsoft/DeepSpeed), [DDP](https://pytorch.org/docs/stable/notes/ddp.html), etc)
+  - Relatively simple to get up and running (minor modifications to code)
+    - {{< fa brands github >}} [`saforem2/ezpz`](https://github.com/saforem2/ezpz)
+- Recent presentation on data-parallel training available on [YouTube](https://youtu.be/930yrXjNkgM)
+
+:::
+
+::: {style="text-align:center;"}
+
+![](https://saforem2.github.io/distributed-training-slides/assets/data-parallel.svg){width="80%"}
+
+:::
+
+:::
+
+# Data Parallel Training
+
+::: {layout="[45,-5,50]" layout-valign="center" style="display: flex; align-items:flex-end;"}
+
+::: {.col1 style="font-size:0.75em;"}
+
+- Each worker has **copy of complete model**
+- Global batch of data split into multiple mini-batches
+  - Each worker computes the corresponding **loss and gradients from local data**
+- Before updating parameters, loss and gradients averaged across workers
+
+:::
+
+::: {style="text-align:center;"}
+
+![](https://saforem2.github.io/distributed-training-slides/assets/data-parallel.svg){width="80%"}
+
+:::
+
+:::
+
+# Data Parallel Training
+
+::: {#fig-avgGrads}
+
+![](https://saforem2.github.io/distributed-training-slides/assets/avgGrads.svg)
+
+:::
+
+# Deal with Data
+
+- At each training step, we want to ensure that **each worker receives unique data**
+
+- This can be done in one of two ways:
+
+    1. Manually partition data (ahead of time) and assign different sections to different workers
+        1. Each worker can only see their local portion of the data
+
+    2. From each worker, randomly select a mini-batch
+        1. Each worker can see the full dataset
+
+  ::: {.callout-warning icon=false title="⚠️  Warning"}
+  Don't forget your seed!  
+
+  When randomly selecting, it is important that each worker uses different seeds to ensure they receive unique data
+  :::
+
+
+# Best Practices {.smaller}
+
+- Use parallel IO whenever possible
+  - Feed each rank from different files
+  - Use MPI IO to have each rank read its own batch from a file
+  - Use several ranks to read data, MPI to scatter to remaining ranks
+    - Most practical in big _at-scale_ training
+
+  ::: {.callout-important icon=false title="Keeping things in Sync 🤝"}
+
+  **Computation stalls during communication !!**  
+
+  Keeping the communication to computation ratio small is important for effective scaling.
+
+  :::
+
+- Take advantage of data storage
+  - Use [striping on lustre](https://wiki.lustre.org/Configuring_Lustre_File_Striping)
+  - Use the right optimizations for Aurora, Polaris, etc.
+
+- Preload data when possible
+  - Offloading to a GPU frees CPU cycles for loading the next batch of data
+    - **minimize IO latency this way**
+
+# Broadcast Initial State
+
+- At the start of training (or when loading from a checkpoint), we want all of our workers to be initialized consistently
+  - **Broadcast** the model and optimizer states from `rank() == 0` worker
+
+  ```{mermaid}
+  flowchart TD
+    0["GPU0"] --> 1["GPU 1"]
+    0 --> 2["GPU 2"]
+    0 -->|Model + Optimizer State| 3["GPU 3"]
+    0 --> ...
+    0 --> N["GPU N"]
+  ```
+
+
+# Model Parallel Training
+
+::: {layout="[60,40]" layout-valign="center" style="display: flex; align-items:flex-end;"}
+
+::: {.col1}
+
+- Split up network over multiple workers
+  - Each receives disjoint subset
+  - All communication associated with subsets are distributed
+- Communication whenever dataflow between two subsets
+- Typically **more complicated** to implement than data parallel training
+- Suitable when the model is too large to fit onto a single device (CPU / GPU)
+
+- {{< fa brands github >}} [`argonne-lcf/Megatron-DeepSpeed`](https://github.com/argonne-lcf/Megatron-DeepSpeed)
+- 🤗 [`huggingface/nanotron`](https://github.com/huggingface/nanotron)
+
+:::
+
+
+::: {#fig-model-parallel-1}
+
+![](https://saforem2.github.io/distributed-training-slides/assets/model-parallel.svg)
+
+:::
+
+:::
+
+# Hands-On
+
+-
+[Instructions](https://github.com/argonne-lcf/ai-science-training-series/blob/main/06_parallel_training/README.md)
+
+  - {{< fa brands github >}} [`saforem2/wordplay` 🎮💬](https://saforem2.github.io/wordplay/)
+  \[[web](https://saforem2.github.io/wordplay/)\]
+
+
+# Thank you!
+
+- Organizers
+- ALCF Data Science & Operations
+
+- Feel free to reach out!
+  <split even >
+
+    [<i class="fas fa-home"></i>](https://samforeman.me)
+    [<i class="far fa-paper-plane"></i>](mailto:///foremans@anl.gov)
+    [<i class="fab fa-twitter"></i>](https://www.twitter.com/saforem2)
+     </split>
+
+::: {.callout-info icon=false title="🙏 Acknowledgements"}
+
+This research used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357.
+
+:::
+
+
+# Backups
+
+
+## Forward Pass
+
+- Each worker has identical copy of model[^1]
+- **Global batch of data split across workers**
+- Loss + Grads averaged across workers before updating parameters
+
+    ```{mermaid}
+    flowchart TD
+      D["dataset"] --> S1["subset_1"]
+      D --> S2["subset_2"]
+      D --> S3["subset_3"]
+      D --> S4["subset_4"]
+      S1 --> W1["Worker 1"]
+      S2 --> W2["Worker 2"]
+      S3 --> W3["Worker 3"]
+      S4 --> W4["Worker 4"]
+    ```
+
+[^1]: Test
+
+## Organization
+
+```{mermaid}
+flowchart TD
+  subgraph identifier[" "]
+    direction LR
+    GPU1
+    GPU2
+    GPU3
+    GPU4
+  end
+  subgraph Network
+    direction LR
+    Model
+  end
+  Network -.-> GPU1
+  Network -.-> GPU2
+  Network -.-> GPU3
+  Network -.-> GPU4
+  subset1 --> GPU1
+  subset2 --> GPU2
+  subset3 --> GPU3
+  subset4 --> GPU4
+  subgraph Dataset
+    direction LR
+    subset1
+    subset2
+    subset3
+    subset4
+  end
+  subgraph Communication
+    direction LR
+    GPU1 <-.-> AR[Allreduce]
+    GPU2 <-.-> AR
+    GPU3 <-.-> AR
+    GPU4 <-.-> AR
+  end
+  AR ==>|Broadcast| Network
+```
+
+# Data Parallel Training
+
+::: {layout="[60,40]" layout-valign="center" style="display: flex; align-items:flex-end;"}
+
+::: {.col1}
+- Each worker receives [identical]{.red} copy of [model]{.red} and [unique]{.blue} subset of
+[data]{.blue}
+:::
+
+::: {.col2}
+
+```{mermaid}
+flowchart TD
+    subgraph identifier[" "]
+        direction LR
+        data --> subset1
+        data --> subset2
+        data --> subset3
+        data --> subset4
+        subset1
+        subset2
+        subset3
+        subset4
+    end
+    subgraph Workers
+        direction LR
+        subset1 --> GPX1["GPU1"]
+        subset2 --> GPX2["GPU2"]
+        subset3 --> GPX3["GPU3"]
+        subset4 --> GPX4["GPU4"]
+    end
+    GPX1 <.-> Communication["Avg + Distribute Gradients"]
+    GPX2 <.-> Communication
+    GPX3 <.-> Communication
+    GPX4 <.-> Communication
+```
+:::
+
+:::
+
+
+
+## Emergent Abilities {background-color="#FBFBFD"}
+
+::: {width="66%" style="text-align: center;"}
+
+<img src="https://github.com/saforem2/llm-lunch-talk/blob/main/docs/assets/emergent-abilities.gif?raw=true" height="75%" />
+
+[Emergent abilities of Large Language Models](https://arxiv.org/abs/2206.07682) @yao2023tree
+:::
+
+
+## Training LLMs
+
+
+::: {layout="[ 50, 40 ]" layout-valign="center"}
+
+::: {#fig-evolution}
+
+![](https://github.com/Mooler0410/LLMsPracticalGuide/raw/main/imgs/survey-gif-test.gif)
+
+Visualization from @yang2023harnessing
+
+:::
+
+::: {}
+
+![](https://github.com/saforem2/llm-lunch-talk/blob/main/docs/assets/it_hungers.jpeg?raw=true)
+
+
+:::
+
+:::
+
+
+## Life-Cycle of the LLM {auto-animate=true}
+
+::: {layout="[ 45, 55 ]" layout-valign=center}
+
+::: {#column-one}
+
+1. Data collection + preprocessing
+
+2. **Pre-training**
+    - Architecture decisions:  
+      `{model_size, hyperparameters,`  
+      `parallelism, lr_schedule, ...}`
+
+3. Supervised Fine-Tuning
+    - Instruction Tuning
+    - Alignment
+
+4. Deploy (+ monitor, re-evaluate, etc.)
+
+:::
+
+::: {#column-two}
+
+::: {#fig-pretrain-two}
+
+![](https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif)
+
+
+**Pre-training**: Virtually all of the compute used during pretraining phase.  
+
+Figure from [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
+:::
+
+:::
+
+:::
+
+## Forward Pass
+
+
+::: {#fig-forward-pass}
+
+<video data-autoplay src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/assisted-generation/gif_1_1080p.mov"></video>
+
+
+Language Model trained for causal language modeling. Video from: [🤗 Generation with LLMs](https://huggingface.co/docs/transformers/main/en/llm_tutorial)
+:::
+
+
+## Generating Text
+
+::: {#fig-generating-text}
+
+<video data-autoplay src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/assisted-generation/gif_2_1080p.mov"></video>
+
+Language Model trained for causal language modeling. Video from: [🤗 Generation with LLMs](https://huggingface.co/docs/transformers/main/en/llm_tutorial)
+:::
+
+
+
+
+## Life-Cycle of the LLM: Pre-training {auto-animate=true}
+
+
+::: {#fig-pretrain-two}
+
+![](https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif)
+
+**Pre-training**: Virtually all of the compute used during pretraining phase
+:::
+
+
+## Life-Cycle of the LLM: Fine-Tuning {auto-animate=true style="font-size: 0.8em;"}
+
+::: {#fig-pretrain-two}
+
+![](https://jalammar.github.io/images/gpt3/10-gpt3-fine-tuning.gif)
+
+**Fine-tuning**[^ill-transf1]: Fine-tuning actually updates the model's weights to make the model better at a certain task.
+
+:::
+
+[^ill-transf1]: Figure from [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
+
+
+## Assistant Models {.centeredslide background-color="#181D29"}
+
+[![](https://github.com/saforem2/LLM-tutorial/blob/main/docs/assets/jailbreak.jpeg?raw=true)]{.preview-image style="text-align:center; margin-left:auto; margin-right: auto;"}
+
+
+## [{{< iconify line-md github-loop >}}`saforem2/wordplay` 🎮💬 ](https://github.com/saforem2/wordplay)
+
+<!-- - [{{< iconify mdi github-face >}} `saforem2/wordplay`](https://github.com/saforem2/wordplay) -->
+
+- Fork of Andrej Karpathy's `nanoGPT`
+
+::: {#fig-nanoGPT}
+
+![](https://github.com/saforem2/nanoGPT/raw/master/assets/nanogpt.jpg)
+
+The simplest, fastest repository for training / finetuning GPT based models.
+:::
+
+## [{{< iconify line-md github-loop >}}`saforem2/wordplay` 🎮💬 ](https://github.com/saforem2/wordplay)
+
+::: {#fig-compare layout="[[40,40]]" layout-valign="bottom" style="display: flex; align-items: flex-end;"}
+
+![`nanoGPT`](https://github.com/saforem2/wordplay/blob/main/assets/car.png?raw=true){#fig-nanogpt width="256px"}
+
+![`wordplay` 🎮 💬](https://github.com/saforem2/wordplay/blob/main/assets/robot.png?raw=true){#fig-wordplay width="150px"}
+
+`nanoGPT`, transformed.
+
+:::
+
+
+## Install
+
+```bash
+python3 -m pip install "git+https://github.com/saforem2/wordplay.git"
+python3 -c 'import wordplay; print(wordplay.__file__)'
+# ./wordplay/src/wordplay/__init__.py
+```
+
+## Dependencies
+
+- [`transformers`](https://github.com/huggingface/transformers) for
+  {{< iconify noto hugging-face >}} transformers (to load `GPT-2` checkpoints)
+- [`datasets`](https://github.com/huggingface/datasets) for {{< iconify noto
+  hugging-face >}} datasets (if you want to use OpenWebText)
+- [`tiktoken`](https://github.com/openai/tiktoken) for OpenAI's fast BPE code
+- [`wandb`](https://wandb.ai) for optional logging
+- [`tqdm`](https://github.com/tqdm/tqdm) for progress bars
+
+
+## Quick Start
+
+- We start with training a character-level GPT on the works of Shakespeare.
+
+  1. Downloading the data (~ 1MB) file
+  2. Convert raw text to one large stream of integers
+
+  ```bash
+  python3 data/shakespeare_char/prepare.py
+  ```
+
+  This will create `data/shakespeare_char/{train.bin, val.bin}`.
+
+## Model [{{< iconify fa-brands github >}} `model.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py) {height="100%"}
+
+::: {.panel-tabset style="height: 100%!important;"}
+
+### `CausalSelfAttention`
+
+```{.python include="model.py" code-line-numbers="true" start-line=64 end-line=155}
+```
+
+### `LayerNorm`
+
+```{.python include="model.py" code-line-numbers="true" start-line=43 end-line=62}
+```
+
+### `MLP`
+
+```{.python include="model.py" code-line-numbers="true" start-line=165 end-line=202}
+```
+
+### `Block`
+
+```{.python include="model.py" code-line-numbers="true" start-line=205 end-line=217}
+```
+
+### `GPT`
+
+```{.python include="model.py" code-line-numbers="true" start-line=220 end-line=525}
+```
+
+:::
+
+## Trainer [{{< iconify fa-brands github >}} `trainer.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py) {height="100%"}
+
+
+::: {.panel-tabset style="font-size: 0.75em; width: 100%; height: 100%;"}
+
+### `get_batch`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
+```
+### `_forward_step`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=534 end-line=542}
+```
+
+### `_backward_step`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=544 end-line=569}
+```
+
+### `train_step`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=571 end-line=674}
+```
+
+### `estimate_loss`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=487 end-line=500}
+```
+:::
+
+## Hands-on Tutorial
+
+::: {layout="[ 60, -5, 25 ]" layout-valign="center"}
+
+::: {.panel-tabset style="font-size: 0.9em; width: 100%!important; height: 100%!important;"}
+
+#### 📒 Shakespeare
+
+- [![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)  
+- [`shakespeare.ipynb`](https://github.com/saforem2/wordplay/blob/main/notebooks/shakespeare.ipynb)
+
+#### 🔗 Links
+
+- [📊 [Slides](https://saforem2.github.io/llm-workshop-talk/#/llm-workshop-talk)]{style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt"}
+- [🏡 [Project Website](https://saforem2.github.io/wordplay)]{style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt"}
+- [💻 [`saforem2/wordplay`](https://github.com/saforem2/wordplay)]{style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt"}
+
+:::
+
+<!-- ![(link to Colab Notebook)](./assets/qrcode-colab.png) -->
+
+:::
+
+## {background-iframe="https://saforem2.github.io/wordplay"}
+
+
+## Links
+
+1. [{{< fa brands github >}} Hannibal046/Awesome-LLM](https://github.com/Hannibal046/Awesome-LLM/blob/main/README.md) [[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)]{.inline-image}
+2. [{{< fa brands github >}} Mooler0410/LLMsPracticalGuide](https://github.com/Mooler0410/LLMsPracticalGuide)
+3. [Large Language Models (in 2023)](https://docs.google.com/presentation/d/1636wKStYdT_yRPbJNrf8MLKpQghuWGDmyHinHhAKeXY/edit#slide=id.g238b2698243_0_734https://docs.google.com/presentation/d/1636wKStYdT_yRPbJNrf8MLKpQghuWGDmyHinHhAKeXY/edit#slide=id.g238b2698243_0_734)
+4. [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
+5. [Generative AI Exists because of the Transformer](https://ig.ft.com/generative-ai/)
+6. [GPT in 60 Lines of Numpy](https://jaykmody.com/blog/gpt-from-scratch/)
+7. [Better Language Models and their Implications](https://openai.com/research/better-language-models)  
+8. [{{< fa solid flask-vial >}}]{.green-text} [Progress / Artefacts / Outcomes from 🌸 Bloom BigScience](https://bigscience.notion.site/ebe3760ae1724dcc92f2e6877de0938f?v=2faf85dc00794321be14bc892539dd4f)
+
+::: {.callout-note title="Acknowledgements"}
+This research used resources of the Argonne Leadership Computing Facility,  
+which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357.
+:::
+
+## References
+
+1. [NVIDIA / NCCL / Collective Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html)
+
+::: {#refs}
+:::

@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "index.html#forward-pass",
+    "href": "index.html#forward-pass",
+    "title": "Parallel Training Techniques",
+    "section": "Forward Pass",
+    "text": "Forward Pass\n\nEach worker has identical copy of model1\nGlobal batch of data split across workers\nLoss + Grads averaged across workers before updating parameters\n\n\n\n\n\n\n    flowchart TD\n      D[\"dataset\"] --&gt; S1[\"subset_1\"]\n      D --&gt; S2[\"subset_2\"]\n      D --&gt; S3[\"subset_3\"]\n      D --&gt; S4[\"subset_4\"]\n      S1 --&gt; W1[\"Worker 1\"]\n      S2 --&gt; W2[\"Worker 2\"]\n      S3 --&gt; W3[\"Worker 3\"]\n      S4 --&gt; W4[\"Worker 4\"]\n\n\n\n\n\n\nTest"
+  },
+  {
+    "objectID": "index.html#organization",
+    "href": "index.html#organization",
+    "title": "Parallel Training Techniques",
+    "section": "Organization",
+    "text": "Organization\n\n\n\n\n\nflowchart TD\n  subgraph identifier[\" \"]\n    direction LR\n    GPU1\n    GPU2\n    GPU3\n    GPU4\n  end\n  subgraph Network\n    direction LR\n    Model\n  end\n  Network -.-&gt; GPU1\n  Network -.-&gt; GPU2\n  Network -.-&gt; GPU3\n  Network -.-&gt; GPU4\n  subset1 --&gt; GPU1\n  subset2 --&gt; GPU2\n  subset3 --&gt; GPU3\n  subset4 --&gt; GPU4\n  subgraph Dataset\n    direction LR\n    subset1\n    subset2\n    subset3\n    subset4\n  end\n  subgraph Communication\n    direction LR\n    GPU1 &lt;-.-&gt; AR[Allreduce]\n    GPU2 &lt;-.-&gt; AR\n    GPU3 &lt;-.-&gt; AR\n    GPU4 &lt;-.-&gt; AR\n  end\n  AR ==&gt;|Broadcast| Network"
+  },
+  {
+    "objectID": "index.html#emergent-abilities",
+    "href": "index.html#emergent-abilities",
+    "title": "Parallel Training Techniques",
+    "section": "Emergent Abilities",
+    "text": "Emergent Abilities\n\n\nEmergent abilities of Large Language Models Yao et al. (2023)"
+  },
+  {
+    "objectID": "index.html#training-llms",
+    "href": "index.html#training-llms",
+    "title": "Parallel Training Techniques",
+    "section": "Training LLMs",
+    "text": "Training LLMs\n\n\n\n\n\n\n\n\n\nFigure 14: Visualization from Yang et al. (2023)"
+  },
+  {
+    "objectID": "index.html#life-cycle-of-the-llm",
+    "href": "index.html#life-cycle-of-the-llm",
+    "title": "Parallel Training Techniques",
+    "section": "Life-Cycle of the LLM",
+    "text": "Life-Cycle of the LLM\n\n\n\n\nData collection + preprocessing\nPre-training\n\nArchitecture decisions:\n{model_size, hyperparameters,\nparallelism, lr_schedule, ...}\n\nSupervised Fine-Tuning\n\nInstruction Tuning\nAlignment\n\nDeploy (+ monitor, re-evaluate, etc.)\n\n\n\n\n\n\n\nPre-training: Virtually all of the compute used during pretraining phase.\n\n\nFigure 15: Figure from The Illustrated Transformer"
+  },
+  {
+    "objectID": "index.html#forward-pass-1",
+    "href": "index.html#forward-pass-1",
+    "title": "Parallel Training Techniques",
+    "section": "Forward Pass",
+    "text": "Forward Pass\n\n\n\n\n\n\n\nFigure 16: Language Model trained for causal language modeling. Video from: 🤗 Generation with LLMs"
+  },
+  {
+    "objectID": "index.html#generating-text",
+    "href": "index.html#generating-text",
+    "title": "Parallel Training Techniques",
+    "section": "Generating Text",
+    "text": "Generating Text\n\n\n\n\n\n\n\nFigure 17: Language Model trained for causal language modeling. Video from: 🤗 Generation with LLMs"
+  },
+  {
+    "objectID": "index.html#life-cycle-of-the-llm-pre-training",
+    "href": "index.html#life-cycle-of-the-llm-pre-training",
+    "title": "Parallel Training Techniques",
+    "section": "Life-Cycle of the LLM: Pre-training",
+    "text": "Life-Cycle of the LLM: Pre-training\n\n\nFigure 18: Pre-training: Virtually all of the compute used during pretraining phase"
+  },
+  {
+    "objectID": "index.html#life-cycle-of-the-llm-fine-tuning",
+    "href": "index.html#life-cycle-of-the-llm-fine-tuning",
+    "title": "Parallel Training Techniques",
+    "section": "Life-Cycle of the LLM: Fine-Tuning",
+    "text": "Life-Cycle of the LLM: Fine-Tuning\n\n\n\n\n\n\nFigure 19: Fine-tuning1: Fine-tuning actually updates the model’s weights to make the model better at a certain task.\n\n\n\nFigure from The Illustrated Transformer"
+  },
+  {
+    "objectID": "index.html#assistant-models",
+    "href": "index.html#assistant-models",
+    "title": "Parallel Training Techniques",
+    "section": "Assistant Models",
+    "text": "Assistant Models"
+  },
+  {
+    "objectID": "index.html#saforem2wordplay",
+    "href": "index.html#saforem2wordplay",
+    "title": "Parallel Training Techniques",
+    "section": "saforem2/wordplay 🎮💬",
+    "text": "saforem2/wordplay 🎮💬\n\n\nFork of Andrej Karpathy’s nanoGPT\n\n\n\nFigure 20: The simplest, fastest repository for training / finetuning GPT based models."
+  },
+  {
+    "objectID": "index.html#saforem2wordplay-1",
+    "href": "index.html#saforem2wordplay-1",
+    "title": "Parallel Training Techniques",
+    "section": "saforem2/wordplay 🎮💬",
+    "text": "saforem2/wordplay 🎮💬\n\n\n\n\n\n\n\n\n\n\n\n(a) nanoGPT\n\n\n\n\n\n\n\n\n\n\n\n(b) wordplay 🎮 💬\n\n\n\n\n\n\n\nFigure 21: nanoGPT, transformed."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "Parallel Training Techniques",
+    "section": "Install",
+    "text": "Install\npython3 -m pip install \"git+https://github.com/saforem2/wordplay.git\"\npython3 -c 'import wordplay; print(wordplay.__file__)'\n# ./wordplay/src/wordplay/__init__.py"
+  },
+  {
+    "objectID": "index.html#dependencies",
+    "href": "index.html#dependencies",
+    "title": "Parallel Training Techniques",
+    "section": "Dependencies",
+    "text": "Dependencies\n\ntransformers for  transformers (to load GPT-2 checkpoints)\ndatasets for  datasets (if you want to use OpenWebText)\ntiktoken for OpenAI’s fast BPE code\nwandb for optional logging\ntqdm for progress bars"
+  },
+  {
+    "objectID": "index.html#quick-start",
+    "href": "index.html#quick-start",
+    "title": "Parallel Training Techniques",
+    "section": "Quick Start",
+    "text": "Quick Start\n\nWe start with training a character-level GPT on the works of Shakespeare.\n\nDownloading the data (~ 1MB) file\nConvert raw text to one large stream of integers\n\npython3 data/shakespeare_char/prepare.py\nThis will create data/shakespeare_char/{train.bin, val.bin}."
+  },
+  {
+    "objectID": "index.html#model-model.py",
+    "href": "index.html#model-model.py",
+    "title": "Parallel Training Techniques",
+    "section": "Model  model.py",
+    "text": "Model  model.py\n\nCausalSelfAttentionLayerNormMLPBlockGPT"
+  },
+  {
+    "objectID": "index.html#trainer-trainer.py",
+    "href": "index.html#trainer-trainer.py",
+    "title": "Parallel Training Techniques",
+    "section": "Trainer  trainer.py",
+    "text": "Trainer  trainer.py\n\nget_batch_forward_step_backward_steptrain_stepestimate_loss"
+  },
+  {
+    "objectID": "index.html#hands-on-tutorial",
+    "href": "index.html#hands-on-tutorial",
+    "title": "Parallel Training Techniques",
+    "section": "Hands-on Tutorial",
+    "text": "Hands-on Tutorial\n\n\n\n\n📒 Shakespeare🔗 Links\n\n\n\n\n\nshakespeare.ipynb\n\n\n\n\n📊 Slides\n🏡 Project Website\n💻 saforem2/wordplay"
+  },
+  {
+    "objectID": "index.html#links-1",
+    "href": "index.html#links-1",
+    "title": "Parallel Training Techniques",
+    "section": "Links",
+    "text": "Links\n\n Hannibal046/Awesome-LLM \n Mooler0410/LLMsPracticalGuide\nLarge Language Models (in 2023)\nThe Illustrated Transformer\nGenerative AI Exists because of the Transformer\nGPT in 60 Lines of Numpy\nBetter Language Models and their Implications\n\n Progress / Artefacts / Outcomes from 🌸 Bloom BigScience\n\n\n\n\n\n\n\n\nAcknowledgements\n\n\nThis research used resources of the Argonne Leadership Computing Facility,\nwhich is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357."
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Parallel Training Techniques",
+    "section": "References",
+    "text": "References\n\nNVIDIA / NCCL / Collective Operations\n\n\n\nYang, Jingfeng, Hongye Jin, Ruixiang Tang, Xiaotian Han, Qizhang Feng, Haoming Jiang, Bing Yin, and Xia Hu. 2023. “Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond.” https://arxiv.org/abs/2304.13712.\n\n\nYao, Shunyu, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, and Karthik Narasimhan. 2023. “Tree of Thoughts: Deliberate Problem Solving with Large Language Models.” https://arxiv.org/abs/2305.10601."
+  }
+]
