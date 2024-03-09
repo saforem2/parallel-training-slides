@@ -1336,8 +1336,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-1-2"><code>LayerNorm</code></a></li><li><a href="#tabset-1-3"><code>MLP</code></a></li><li><a href="#tabset-1-4"><code>Block</code></a></li><li><a href="#tabset-1-5"><code>GPT</code></a></li></ul>
 <div class="tab-content" style="height: 100%!important;">
 <div id="tabset-1-1">
-<div class="sourceCode" id="cb3" data-startfrom="64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 63;"><span id="cb3-64"><a></a></span>
-<span id="cb3-65"><a></a><span class="kw">class</span> CausalSelfAttention(nn.Module):</span>
+<div class="sourceCode" id="cb3" data-startfrom="65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 64;"><span id="cb3-65"><a></a><span class="kw">class</span> CausalSelfAttention(nn.Module):</span>
 <span id="cb3-66"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
 <span id="cb3-67"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb3-68"><a></a>        <span class="cf">assert</span> config.n_embd <span class="op">%</span> config.n_head <span class="op">==</span> <span class="dv">0</span></span>
@@ -1823,21 +1822,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>get_batch</code></a></li><li><a href="#tabset-2-2"><code>_forward_step</code></a></li><li><a href="#tabset-2-3"><code>_backward_step</code></a></li><li><a href="#tabset-2-4"><code>train_step</code></a></li><li><a href="#tabset-2-5"><code>estimate_loss</code></a></li></ul>
 <div class="tab-content" style="font-size: 0.75em; width: 100%; height: 100%;">
 <div id="tabset-2-1">
-<div class="sourceCode" id="cb8" data-startfrom="446"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 445;"><span id="cb8-446"><a></a>            engine, optimizer, <span class="op">*</span>_ <span class="op">=</span> deepspeed.initialize(</span>
-<span id="cb8-447"><a></a>                model<span class="op">=</span>model,</span>
-<span id="cb8-448"><a></a>                config<span class="op">=</span>ds_config,</span>
-<span id="cb8-449"><a></a>                model_parameters<span class="op">=</span>model.parameters()</span>
-<span id="cb8-450"><a></a>            )</span>
-<span id="cb8-451"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb8-452"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'Unable to initialize DeepSpeed'</span>)</span>
-<span id="cb8-453"><a></a>        <span class="cf">assert</span> engine <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> optimizer <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
-<span id="cb8-454"><a></a>        <span class="cf">return</span> {</span>
-<span id="cb8-455"><a></a>            <span class="st">'model_engine'</span>: engine,</span>
-<span id="cb8-456"><a></a>            <span class="st">'optimizer'</span>: optimizer,</span>
-<span id="cb8-457"><a></a>            <span class="st">'ds_config'</span>: ds_config,</span>
-<span id="cb8-458"><a></a>        }</span>
-<span id="cb8-459"><a></a></span>
-<span id="cb8-460"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
+<div class="sourceCode" id="cb8" data-startfrom="460"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 459;"><span id="cb8-460"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
 <span id="cb8-461"><a></a>        <span class="co"># data = self.config.train_data if split == 'train'</span></span>
 <span id="cb8-462"><a></a>        <span class="co"># else self.config.val_data</span></span>
 <span id="cb8-463"><a></a>        data <span class="op">=</span> <span class="va">self</span>.config.data.data.get(split, <span class="va">None</span>)</span>
@@ -1851,35 +1836,35 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb8-471"><a></a>            [</span>
 <span id="cb8-472"><a></a>                torch.from_numpy((data[i:i<span class="op">+</span>block_size]).astype(np.int64))</span>
 <span id="cb8-473"><a></a>                <span class="cf">for</span> i <span class="kw">in</span> ix</span>
-<span id="cb8-474"><a></a>            ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-474"><a></a>            ]</span>
+<span id="cb8-475"><a></a>        )</span>
+<span id="cb8-476"><a></a>        y <span class="op">=</span> torch.stack(</span>
+<span id="cb8-477"><a></a>            [</span>
+<span id="cb8-478"><a></a>                torch.from_numpy((data[i<span class="op">+</span><span class="dv">1</span>:i<span class="op">+</span><span class="dv">1</span><span class="op">+</span>block_size]).astype(np.int64))</span>
+<span id="cb8-479"><a></a>                <span class="cf">for</span> i <span class="kw">in</span> ix</span>
+<span id="cb8-480"><a></a>            ]</span>
+<span id="cb8-481"><a></a>        )</span>
+<span id="cb8-482"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.device_type <span class="op">==</span> <span class="st">'cuda'</span>:</span>
+<span id="cb8-483"><a></a>            x <span class="op">=</span> x.pin_memory().to(<span class="va">self</span>.config.device_type, non_blocking<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-484"><a></a>            y <span class="op">=</span> y.pin_memory().to(<span class="va">self</span>.config.device_type, non_blocking<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-485"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-486"><a></a>            x <span class="op">=</span> x.to(<span class="va">self</span>.config.device_type)</span>
+<span id="cb8-487"><a></a>            y <span class="op">=</span> y.to(<span class="va">self</span>.config.device_type)</span>
+<span id="cb8-488"><a></a>        <span class="cf">return</span> x, y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-2">
-<div class="sourceCode" id="cb9" data-startfrom="534"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 533;"><span id="cb9-534"><a></a>            n_embd<span class="op">=</span>ckpt_model[<span class="st">'n_embd'</span>],</span>
-<span id="cb9-535"><a></a>            block_size<span class="op">=</span>ckpt_model[<span class="st">'block_size'</span>],</span>
-<span id="cb9-536"><a></a>            bias<span class="op">=</span>ckpt_model[<span class="st">'bias'</span>],</span>
-<span id="cb9-537"><a></a>            vocab_size<span class="op">=</span>ckpt_model[<span class="st">'vocab_size'</span>],</span>
-<span id="cb9-538"><a></a>        )</span>
-<span id="cb9-539"><a></a>        model <span class="op">=</span> GPT(model_config)</span>
-<span id="cb9-540"><a></a>        state_dict <span class="op">=</span> checkpoint[<span class="st">'model'</span>]</span>
-<span id="cb9-541"><a></a>        unwanted_prefix <span class="op">=</span> <span class="st">'_orig_mod.'</span></span>
-<span id="cb9-542"><a></a>        <span class="cf">for</span> k, _ <span class="kw">in</span> <span class="bu">list</span>(state_dict.items()):</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9" data-startfrom="548"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 547;"><span id="cb9-548"><a></a>    <span class="kw">def</span> _forward_step(<span class="va">self</span>, x: torch.Tensor, y: torch.Tensor) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb9-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb9-550"><a></a>        <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
+<span id="cb9-551"><a></a>            logits, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
+<span id="cb9-552"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb9-553"><a></a>            <span class="st">'logits'</span>: logits,</span>
+<span id="cb9-554"><a></a>            <span class="st">'loss'</span>: loss,</span>
+<span id="cb9-555"><a></a>            <span class="st">'dt'</span>: time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb9-556"><a></a>        }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-3">
-<div class="sourceCode" id="cb10" data-startfrom="544"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 543;"><span id="cb10-544"><a></a>                state_dict[k[<span class="bu">len</span>(unwanted_prefix):]] <span class="op">=</span> state_dict.pop(k)</span>
-<span id="cb10-545"><a></a>        model.load_state_dict(state_dict)</span>
-<span id="cb10-546"><a></a>        <span class="cf">return</span> model, checkpoint</span>
-<span id="cb10-547"><a></a></span>
-<span id="cb10-548"><a></a>    <span class="kw">def</span> _forward_step(<span class="va">self</span>, x: torch.Tensor, y: torch.Tensor) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb10-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb10-550"><a></a>        <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
-<span id="cb10-551"><a></a>            logits, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
-<span id="cb10-552"><a></a>        <span class="cf">return</span> {</span>
-<span id="cb10-553"><a></a>            <span class="st">'logits'</span>: logits,</span>
-<span id="cb10-554"><a></a>            <span class="st">'loss'</span>: loss,</span>
-<span id="cb10-555"><a></a>            <span class="st">'dt'</span>: time.perf_counter() <span class="op">-</span> t0</span>
-<span id="cb10-556"><a></a>        }</span>
-<span id="cb10-557"><a></a></span>
-<span id="cb10-558"><a></a>    <span class="kw">def</span> _backward_step(</span>
+<div class="sourceCode" id="cb10" data-startfrom="558"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 557;"><span id="cb10-558"><a></a>    <span class="kw">def</span> _backward_step(</span>
 <span id="cb10-559"><a></a>            <span class="va">self</span>,</span>
 <span id="cb10-560"><a></a>            loss: torch.Tensor,</span>
 <span id="cb10-561"><a></a>            propagate_grads: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
@@ -1890,24 +1875,24 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb10-566"><a></a>            <span class="va">self</span>.model_engine.step(loss)      <span class="co"># type:ignore</span></span>
 <span id="cb10-567"><a></a>        <span class="cf">else</span>:</span>
 <span id="cb10-568"><a></a>            <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb10-569"><a></a>                <span class="va">self</span>.grad_scaler.scale(loss).backward()  <span class="co"># type:ignore</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-569"><a></a>                <span class="va">self</span>.grad_scaler.scale(loss).backward()  <span class="co"># type:ignore</span></span>
+<span id="cb10-570"><a></a>            <span class="cf">if</span> propagate_grads:</span>
+<span id="cb10-571"><a></a>                <span class="cf">if</span> <span class="va">self</span>.config.optimizer.grad_clip <span class="op">!=</span> <span class="fl">0.0</span>:</span>
+<span id="cb10-572"><a></a>                    <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-573"><a></a>                        <span class="va">self</span>.grad_scaler.unscale_(<span class="va">self</span>.optimizer)</span>
+<span id="cb10-574"><a></a>                    torch.nn.utils.clip_grad_norm_(  <span class="co"># pyright: ignore</span></span>
+<span id="cb10-575"><a></a>                        <span class="va">self</span>.model_engine.parameters(),</span>
+<span id="cb10-576"><a></a>                        <span class="va">self</span>.config.optimizer.grad_clip</span>
+<span id="cb10-577"><a></a>                    )</span>
+<span id="cb10-578"><a></a>                <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-579"><a></a>                    <span class="va">self</span>.grad_scaler.step(<span class="va">self</span>.optimizer)</span>
+<span id="cb10-580"><a></a>                    <span class="va">self</span>.grad_scaler.update()</span>
+<span id="cb10-581"><a></a>                    <span class="va">self</span>.optimizer.zero_grad(set_to_none<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-582"><a></a></span>
+<span id="cb10-583"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-4">
-<div class="sourceCode" id="cb11" data-startfrom="571"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 570;"><span id="cb11-571"><a></a>                <span class="cf">if</span> <span class="va">self</span>.config.optimizer.grad_clip <span class="op">!=</span> <span class="fl">0.0</span>:</span>
-<span id="cb11-572"><a></a>                    <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb11-573"><a></a>                        <span class="va">self</span>.grad_scaler.unscale_(<span class="va">self</span>.optimizer)</span>
-<span id="cb11-574"><a></a>                    torch.nn.utils.clip_grad_norm_(  <span class="co"># pyright: ignore</span></span>
-<span id="cb11-575"><a></a>                        <span class="va">self</span>.model_engine.parameters(),</span>
-<span id="cb11-576"><a></a>                        <span class="va">self</span>.config.optimizer.grad_clip</span>
-<span id="cb11-577"><a></a>                    )</span>
-<span id="cb11-578"><a></a>                <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb11-579"><a></a>                    <span class="va">self</span>.grad_scaler.step(<span class="va">self</span>.optimizer)</span>
-<span id="cb11-580"><a></a>                    <span class="va">self</span>.grad_scaler.update()</span>
-<span id="cb11-581"><a></a>                    <span class="va">self</span>.optimizer.zero_grad(set_to_none<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-582"><a></a></span>
-<span id="cb11-583"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span>
-<span id="cb11-584"><a></a></span>
-<span id="cb11-585"><a></a>    <span class="kw">def</span> train_step(</span>
+<div class="sourceCode" id="cb11" data-startfrom="585"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 584;"><span id="cb11-585"><a></a>    <span class="kw">def</span> train_step(</span>
 <span id="cb11-586"><a></a>            <span class="va">self</span>,</span>
 <span id="cb11-587"><a></a>            x: torch.Tensor,</span>
 <span id="cb11-588"><a></a>            y: torch.Tensor,</span>
@@ -1973,52 +1958,29 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb11-648"><a></a>            <span class="st">'timers'</span>: timers,</span>
 <span id="cb11-649"><a></a>            <span class="st">'x'</span>: x,</span>
 <span id="cb11-650"><a></a>            <span class="st">'y'</span>: y,</span>
-<span id="cb11-651"><a></a>        }</span>
-<span id="cb11-652"><a></a></span>
-<span id="cb11-653"><a></a>    <span class="kw">def</span> save_ckpt(</span>
-<span id="cb11-654"><a></a>            <span class="va">self</span>,</span>
-<span id="cb11-655"><a></a>            raw_model: Optional[torch.nn.Module <span class="op">|</span> GPT] <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb11-656"><a></a>            add_to_wandb: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb11-657"><a></a>    ):</span>
-<span id="cb11-658"><a></a>        <span class="cf">if</span> raw_model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb11-659"><a></a>            model <span class="op">=</span> raw_model  <span class="co"># type:ignore</span></span>
-<span id="cb11-660"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb11-661"><a></a>            model <span class="op">=</span> <span class="va">self</span>.model</span>
-<span id="cb11-662"><a></a>        <span class="cf">assert</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
-<span id="cb11-663"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
-<span id="cb11-664"><a></a>        <span class="co"># assert issubclass(GPT,  torch.nn.Module)</span></span>
-<span id="cb11-665"><a></a>        ckpt <span class="op">=</span> {</span>
-<span id="cb11-666"><a></a>            <span class="st">'model'</span>: model.state_dict(),</span>
-<span id="cb11-667"><a></a>            <span class="st">'optimizer'</span>: <span class="va">self</span>.optimizer.state_dict(),</span>
-<span id="cb11-668"><a></a>            <span class="st">'model_args'</span>: asdict(<span class="va">self</span>.config.model),</span>
-<span id="cb11-669"><a></a>            <span class="st">'iter_num'</span>: <span class="va">self</span>.config.iter_num,</span>
-<span id="cb11-670"><a></a>            <span class="st">'best_val_loss'</span>: <span class="va">self</span>.config.best_val_loss,</span>
-<span id="cb11-671"><a></a>            <span class="st">'config'</span>: asdict(<span class="va">self</span>.config),</span>
-<span id="cb11-672"><a></a>        }</span>
-<span id="cb11-673"><a></a>        <span class="co"># assert (</span></span>
-<span id="cb11-674"><a></a>        <span class="co">#     isinstance(model, GPT)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-651"><a></a>        }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-5">
-<div class="sourceCode" id="cb12" data-startfrom="487"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 486;"><span id="cb12-487"><a></a>            y <span class="op">=</span> y.to(<span class="va">self</span>.config.device_type)</span>
-<span id="cb12-488"><a></a>        <span class="cf">return</span> x, y</span>
-<span id="cb12-489"><a></a></span>
-<span id="cb12-490"><a></a>    <span class="kw">def</span> get_lr(<span class="va">self</span>, it: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
-<span id="cb12-491"><a></a>        <span class="cf">if</span> it <span class="op">&lt;</span> <span class="va">self</span>._witers:</span>
-<span id="cb12-492"><a></a>            <span class="cf">return</span> <span class="va">self</span>._lr <span class="op">*</span> it <span class="op">/</span> <span class="va">self</span>._witers</span>
-<span id="cb12-493"><a></a>        <span class="cf">if</span> it <span class="op">&gt;</span> <span class="va">self</span>._diters:</span>
-<span id="cb12-494"><a></a>            <span class="cf">return</span> <span class="va">self</span>._min_lr</span>
-<span id="cb12-495"><a></a>        decay_ratio <span class="op">=</span> (it <span class="op">-</span> <span class="va">self</span>._witers) <span class="op">/</span> (<span class="va">self</span>._diters <span class="op">-</span> <span class="va">self</span>._witers)</span>
-<span id="cb12-496"><a></a>        <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> decay_ratio <span class="op">&lt;=</span> <span class="dv">1</span></span>
-<span id="cb12-497"><a></a>        coeff <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">+</span> math.cos(math.pi <span class="op">*</span> decay_ratio))</span>
-<span id="cb12-498"><a></a>        <span class="cf">return</span> <span class="va">self</span>._min_lr <span class="op">+</span> coeff <span class="op">*</span> (<span class="va">self</span>._lr <span class="op">-</span> <span class="va">self</span>._min_lr)</span>
-<span id="cb12-499"><a></a></span>
-<span id="cb12-500"><a></a>    <span class="at">@torch.no_grad</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-startfrom="500"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 499;"><span id="cb12-500"><a></a>    <span class="at">@torch.no_grad</span>()</span>
+<span id="cb12-501"><a></a>    <span class="kw">def</span> estimate_loss(<span class="va">self</span>):</span>
+<span id="cb12-502"><a></a>        out <span class="op">=</span> {}</span>
+<span id="cb12-503"><a></a>        <span class="va">self</span>.model.<span class="bu">eval</span>()</span>
+<span id="cb12-504"><a></a>        <span class="cf">for</span> split <span class="kw">in</span> <span class="va">self</span>.config.data.data.keys():</span>
+<span id="cb12-505"><a></a>            losses <span class="op">=</span> torch.zeros(<span class="va">self</span>.config.train.eval_iters)</span>
+<span id="cb12-506"><a></a>            <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.config.train.eval_iters):</span>
+<span id="cb12-507"><a></a>                x, y <span class="op">=</span> <span class="va">self</span>.get_batch(split)</span>
+<span id="cb12-508"><a></a>                <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
+<span id="cb12-509"><a></a>                    _, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
+<span id="cb12-510"><a></a>                losses[k] <span class="op">=</span> loss.item()</span>
+<span id="cb12-511"><a></a>            out[split] <span class="op">=</span> losses.mean()</span>
+<span id="cb12-512"><a></a>        <span class="va">self</span>.model.train()</span>
+<span id="cb12-513"><a></a>        <span class="cf">return</span> out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="hands-on-tutorial" class="slide level2 center">
-<h2>Hands-on Tutorial</h2>
+<section id="self-contained-shakespeare-example" class="slide level2 center">
+<h2>Self-Contained Shakespeare Example</h2>
 <div class="quarto-layout-panel" data-layout="[ 60, -5, 25 ]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">

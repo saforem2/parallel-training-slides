@@ -772,7 +772,7 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
 ### `CausalSelfAttention`
 
-```{.python include="model.py" code-line-numbers="true" start-line=64 end-line=155}
+```{.python include="model.py" code-line-numbers="true" start-line=65 end-line=155}
 ```
 
 ### `LayerNorm`
@@ -804,30 +804,30 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
 ### `get_batch`
 
-```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
+```{.python include="trainer.py" code-line-numbers="true" start-line=460 end-line=488}
 ```
 ### `_forward_step`
 
-```{.python include="trainer.py" code-line-numbers="true" start-line=534 end-line=542}
+```{.python include="trainer.py" code-line-numbers="true" start-line=548 end-line=556}
 ```
 
 ### `_backward_step`
 
-```{.python include="trainer.py" code-line-numbers="true" start-line=544 end-line=569}
+```{.python include="trainer.py" code-line-numbers="true" start-line=558 end-line=583}
 ```
 
 ### `train_step`
 
-```{.python include="trainer.py" code-line-numbers="true" start-line=571 end-line=674}
+```{.python include="trainer.py" code-line-numbers="true" start-line=585 end-line=651}
 ```
 
 ### `estimate_loss`
 
-```{.python include="trainer.py" code-line-numbers="true" start-line=487 end-line=500}
+```{.python include="trainer.py" code-line-numbers="true" start-line=500 end-line=513}
 ```
 :::
 
-## Hands-on Tutorial
+## Self-Contained Shakespeare Example
 
 ::: {layout="[ 60, -5, 25 ]" layout-valign="center"}
 
