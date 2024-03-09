@@ -504,7 +504,7 @@
 </section>
 <section id="parallel-training-techniques" class="title-slide slide level1 center">
 <h1>Parallel Training Techniques</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,-5, 35]">
+<div class="quarto-layout-panel" data-layout="[60,-5, 35]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <p><span class="dim-text"><strong><a href="https://github.com/argonne-lcf/llm-workshop">AI for Science Training Series</a></strong><sup>1</sup></span><br>
@@ -570,16 +570,16 @@ Figure&nbsp;2: [<strong>300,000</strong>x since 2012] vs [7x for Moore’s Law]
 <h1>Single GPU Training</h1>
 
 <img data-src="./assets/single-gpu-step-1.drawio.svg" style="width:90.0%" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;3: <strong>SLOW</strong> !!, model size determined by GPU memory
+Figure&nbsp;3: <strong>SLOW</strong> !! model size limited by GPU memory
 </p></section>
 
+<section>
 <section id="collective-communication" class="title-slide slide level1 smaller center">
 <h1>Collective Communication</h1>
 <p>Typically, we assign 1 <code>rank</code> to each GPU (or <code>accelerator</code>), i.e.&nbsp;<code>rank</code> <span class="math inline">\in</span> <code>[0, 1, ..., WORLD_SIZE-1]</code>.</p>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>AllReduce</code></a></li><li><a href="#tabset-1-2"><code>Reduce</code></a></li><li><a href="#tabset-1-3"><code>Broadcast</code></a></li><li><a href="#tabset-1-4"><code>AllGather</code></a></li><li><a href="#tabset-1-5"><code>Scatter</code></a></li><li><a href="#tabset-1-6"><code>ReduceScatter</code></a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
+<p>::: {.panel-tabset}</p>
+</section>
+<h3 id="allreduce"><code>AllReduce</code></h3>
 <ul>
 <li>Perform <em>reductions</em> on data (e.g.&nbsp;<code>sum</code>, <code>min</code>, <code>max</code>) across ranks, send result back to everyone</li>
 </ul>
@@ -593,8 +593,7 @@ Figure&nbsp;4: All-Reduce operation: each rank receives the reduction of input v
 </figcaption>
 </figure>
 </div>
-</div>
-<div id="tabset-1-2">
+<h3 id="reduce"><code>Reduce</code></h3>
 <ul>
 <li>Perform a <em>reduction</em> on data across ranks, send to individual</li>
 </ul>
@@ -608,8 +607,7 @@ Figure&nbsp;5: Reduce operation: one rank receives the reduction of input values
 </figcaption>
 </figure>
 </div>
-</div>
-<div id="tabset-1-3">
+<h3 id="broadcast"><code>Broadcast</code></h3>
 <ul>
 <li><code>broadcast</code> (<em>send</em>) a tensor <code><span class="math inline">x</span></code> from one rank to all ranks</li>
 </ul>
@@ -623,8 +621,7 @@ Figure&nbsp;6
 </figcaption>
 </figure>
 </div>
-</div>
-<div id="tabset-1-4">
+<h3 id="allgather"><code>AllGather</code></h3>
 <ul>
 <li>Gathers tensors from the whole group in a list.</li>
 </ul>
@@ -638,8 +635,7 @@ Figure&nbsp;7
 </figcaption>
 </figure>
 </div>
-</div>
-<div id="tabset-1-5">
+<h3 id="scatter"><code>Scatter</code></h3>
 <ul>
 <li>Scatters a list of tensors to the whole group</li>
 </ul>
@@ -653,26 +649,17 @@ Figure&nbsp;8
 </figcaption>
 </figure>
 </div>
-</div>
-<div id="tabset-1-6">
-<ul>
-<li>Reduces, then scatters a list of tensors to all processes in a group.</li>
-</ul>
-<div id="fig-reducescatter" class="quarto-figure quarto-figure-center quarto-float">
-<figure class="quarto-float quarto-float-fig">
-<div aria-describedby="fig-reducescatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="./assets/collective-reducescatter.drawio.svg" style="width:50.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-reducescatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-
+<!-- ### `ReduceScatter` -->
+<!---->
+<!-- - Reduces, then scatters a list of tensors to all processes in a group. -->
+<!---->
+<!-- ::: {#fig-reducescatter} -->
+<!---->
+<!-- ![](./assets/collective-reducescatter.drawio.svg){width="50%"} -->
+<!---->
+<!-- ::: -->
+<!---->
+<!-- ::: --></section>
 <section id="collective-operations" class="title-slide slide level1 center">
 <h1>Collective Operations</h1>
 <div title="⌛ Timeouts">
@@ -783,7 +770,7 @@ Table&nbsp;1: Batch-Size-Scaling
 
 <!-- ::: -->
 <img data-src="./assets/multi-gpu-ddp.drawio.svg" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;10
+Figure&nbsp;9
 </p></section>
 
 <section id="data-parallel-training-1" class="title-slide slide level1 center">
@@ -803,12 +790,12 @@ Figure&nbsp;10
 <h1>Data Parallel Training</h1>
 
 <img data-src="./assets/data-parallel-light.svg" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;11
+Figure&nbsp;10
 </p></section>
 
 <section id="data-parallel-training-3" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
+<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -835,7 +822,7 @@ Figure&nbsp;11
 
 <section id="data-parallel-training-4" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
+<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -861,7 +848,7 @@ Figure&nbsp;11
 <h1>Data Parallel Training</h1>
 
 <img data-src="https://saforem2.github.io/distributed-training-slides/assets/avgGrads.svg" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;12
+Figure&nbsp;11
 </p></section>
 
 <section id="deal-with-data" class="title-slide slide level1 center">
@@ -964,7 +951,7 @@ Figure&nbsp;12
 
 <section id="model-parallel-training" class="title-slide slide level1 center">
 <h1>Model Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
+<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -987,7 +974,7 @@ Figure&nbsp;12
 <img data-src="https://saforem2.github.io/distributed-training-slides/assets/model-parallel.svg">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-model-parallel-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13
+Figure&nbsp;12
 </figcaption>
 </figure>
 </div>
@@ -1104,7 +1091,7 @@ Figure&nbsp;13
 <section>
 <section id="data-parallel-training-6" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
+<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -1168,7 +1155,7 @@ Figure&nbsp;13
 <img data-src="https://github.com/Mooler0410/LLMsPracticalGuide/raw/main/imgs/survey-gif-test.gif">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14: Visualization from <span class="citation" data-cites="yang2023harnessing">Yang et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span>
+Figure&nbsp;13: Visualization from <span class="citation" data-cites="yang2023harnessing">Yang et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span>
 </figcaption>
 </figure>
 </div>
@@ -1208,7 +1195,7 @@ Figure&nbsp;14: Visualization from <span class="citation" data-cites="yang2023ha
 <p><strong>Pre-training</strong>: Virtually all of the compute used during pretraining phase.</p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pretrain-two-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15: Figure from <a href="http://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a>
+Figure&nbsp;14: Figure from <a href="http://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a>
 </figcaption>
 </figure>
 </div>
@@ -1225,7 +1212,7 @@ Figure&nbsp;15: Figure from <a href="http://jalammar.github.io/illustrated-trans
 </video>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forward-pass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;16: Language Model trained for causal language modeling. Video from: <a href="https://huggingface.co/docs/transformers/main/en/llm_tutorial">🤗 Generation with LLMs</a>
+Figure&nbsp;15: Language Model trained for causal language modeling. Video from: <a href="https://huggingface.co/docs/transformers/main/en/llm_tutorial">🤗 Generation with LLMs</a>
 </figcaption>
 </figure>
 </div>
@@ -1239,7 +1226,7 @@ Figure&nbsp;16: Language Model trained for causal language modeling. Video from:
 </video>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-generating-text-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17: Language Model trained for causal language modeling. Video from: <a href="https://huggingface.co/docs/transformers/main/en/llm_tutorial">🤗 Generation with LLMs</a>
+Figure&nbsp;16: Language Model trained for causal language modeling. Video from: <a href="https://huggingface.co/docs/transformers/main/en/llm_tutorial">🤗 Generation with LLMs</a>
 </figcaption>
 </figure>
 </div>
@@ -1248,7 +1235,7 @@ Figure&nbsp;17: Language Model trained for causal language modeling. Video from:
 <h2 data-id="quarto-animate-title">Life-Cycle of the LLM: Pre-training</h2>
 
 <img data-src="https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;18: <strong>Pre-training</strong>: Virtually all of the compute used during pretraining phase
+Figure&nbsp;17: <strong>Pre-training</strong>: Virtually all of the compute used during pretraining phase
 </p></section>
 <section id="life-cycle-of-the-llm-fine-tuning" class="slide level2 center" data-auto-animate="true" style="font-size: 0.8em;">
 <h2 data-id="quarto-animate-title">Life-Cycle of the LLM: Fine-Tuning</h2>
@@ -1258,7 +1245,7 @@ Figure&nbsp;18: <strong>Pre-training</strong>: Virtually all of the compute used
 <img data-src="https://jalammar.github.io/images/gpt3/10-gpt3-fine-tuning.gif">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pretrain-two-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;19: <strong>Fine-tuning</strong><sup>1</sup>: Fine-tuning actually updates the model’s weights to make the model better at a certain task.
+Figure&nbsp;18: <strong>Fine-tuning</strong><sup>1</sup>: Fine-tuning actually updates the model’s weights to make the model better at a certain task.
 </figcaption>
 </figure>
 </div>
@@ -1275,7 +1262,7 @@ Figure&nbsp;19: <strong>Fine-tuning</strong><sup>1</sup>: Fine-tuning actually u
 </ul>
 
 <img data-src="https://github.com/saforem2/nanoGPT/raw/master/assets/nanogpt.jpg" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;20: The simplest, fastest repository for training / finetuning GPT based models.
+Figure&nbsp;19: The simplest, fastest repository for training / finetuning GPT based models.
 </p></section>
 <section id="saforem2wordplay-1" class="slide level2 center">
 <h2><a href="https://github.com/saforem2/wordplay"><iconify-icon inline="" icon="line-md:github-loop"></iconify-icon><code>saforem2/wordplay</code> 🎮💬</a></h2>
@@ -1310,7 +1297,7 @@ Figure&nbsp;20: The simplest, fastest repository for training / finetuning GPT b
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;21: <code>nanoGPT</code>, transformed.
+Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 </figcaption>
 </figure>
 </div>
@@ -1346,21 +1333,21 @@ Figure&nbsp;21: <code>nanoGPT</code>, transformed.
 <section id="model-model.py" class="slide level2 center" height="100%">
 <h2>Model <a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>model.py</code></a></h2>
 <div class="panel-tabset" style="height: 100%!important;">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-2-2"><code>LayerNorm</code></a></li><li><a href="#tabset-2-3"><code>MLP</code></a></li><li><a href="#tabset-2-4"><code>Block</code></a></li><li><a href="#tabset-2-5"><code>GPT</code></a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-1-2"><code>LayerNorm</code></a></li><li><a href="#tabset-1-3"><code>MLP</code></a></li><li><a href="#tabset-1-4"><code>Block</code></a></li><li><a href="#tabset-1-5"><code>GPT</code></a></li></ul>
 <div class="tab-content" style="height: 100%!important;">
-<div id="tabset-2-1">
+<div id="tabset-1-1">
 <div class="sourceCode" id="cb3" data-start-line="64" data-end-line="155"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-2">
+<div id="tabset-1-2">
 <div class="sourceCode" id="cb4" data-start-line="43" data-end-line="62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-3">
+<div id="tabset-1-3">
 <div class="sourceCode" id="cb5" data-start-line="165" data-end-line="202"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-4">
+<div id="tabset-1-4">
 <div class="sourceCode" id="cb6" data-start-line="205" data-end-line="217"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-5">
+<div id="tabset-1-5">
 <div class="sourceCode" id="cb7" data-start-line="220" data-end-line="525"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -1369,21 +1356,21 @@ Figure&nbsp;21: <code>nanoGPT</code>, transformed.
 <section id="trainer-trainer.py" class="slide level2 center" height="100%">
 <h2>Trainer <a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>trainer.py</code></a></h2>
 <div class="panel-tabset" style="font-size: 0.75em; width: 100%; height: 100%;">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1"><code>get_batch</code></a></li><li><a href="#tabset-3-2"><code>_forward_step</code></a></li><li><a href="#tabset-3-3"><code>_backward_step</code></a></li><li><a href="#tabset-3-4"><code>train_step</code></a></li><li><a href="#tabset-3-5"><code>estimate_loss</code></a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>get_batch</code></a></li><li><a href="#tabset-2-2"><code>_forward_step</code></a></li><li><a href="#tabset-2-3"><code>_backward_step</code></a></li><li><a href="#tabset-2-4"><code>train_step</code></a></li><li><a href="#tabset-2-5"><code>estimate_loss</code></a></li></ul>
 <div class="tab-content" style="font-size: 0.75em; width: 100%; height: 100%;">
-<div id="tabset-3-1">
+<div id="tabset-2-1">
 <div class="sourceCode" id="cb8" data-start-line="446" data-end-line="474"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-2">
+<div id="tabset-2-2">
 <div class="sourceCode" id="cb9" data-start-line="534" data-end-line="542"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-3">
+<div id="tabset-2-3">
 <div class="sourceCode" id="cb10" data-start-line="544" data-end-line="569"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-4">
+<div id="tabset-2-4">
 <div class="sourceCode" id="cb11" data-start-line="571" data-end-line="674"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-5">
+<div id="tabset-2-5">
 <div class="sourceCode" id="cb12" data-start-line="487" data-end-line="500"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -1395,16 +1382,16 @@ Figure&nbsp;21: <code>nanoGPT</code>, transformed.
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
 <div class="panel-tabset" style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
-<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">📒 Shakespeare</a></li><li><a href="#tabset-4-2">🔗 Links</a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">📒 Shakespeare</a></li><li><a href="#tabset-3-2">🔗 Links</a></li></ul>
 <div class="tab-content" style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
-<div id="tabset-4-1">
+<div id="tabset-3-1">
 <ul>
 <li><a href="https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb"><img data-src="https://colab.research.google.com/assets/colab-badge.svg"></a><br>
 </li>
 <li><a href="https://github.com/saforem2/wordplay/blob/main/notebooks/shakespeare.ipynb"><code>shakespeare.ipynb</code></a></li>
 </ul>
 </div>
-<div id="tabset-4-2">
+<div id="tabset-3-2">
 <ul>
 <li><span style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt">📊 <a href="https://saforem2.github.io/llm-workshop-talk/#/llm-workshop-talk">Slides</a></span></li>
 <li><span style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt">🏡 <a href="https://saforem2.github.io/wordplay">Project Website</a></span></li>

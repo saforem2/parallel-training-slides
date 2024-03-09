@@ -159,7 +159,7 @@ format:
 
 ![](./assets/single-gpu-step-1.drawio.svg){width="90%"}
 
-**SLOW** !!, model size determined by GPU memory
+**SLOW** !! model size limited by GPU memory
 :::
 
 # Collective Communication {.smaller}
@@ -225,17 +225,17 @@ Reduce operation: one rank receives the reduction of input values across ranks
 
 :::
 
-### `ReduceScatter`
-
-- Reduces, then scatters a list of tensors to all processes in a group.
-
-::: {#fig-reducescatter}
-
-![](./assets/collective-reducescatter.drawio.svg){width="50%"}
-
-:::
-
-:::
+<!-- ### `ReduceScatter` -->
+<!---->
+<!-- - Reduces, then scatters a list of tensors to all processes in a group. -->
+<!---->
+<!-- ::: {#fig-reducescatter} -->
+<!---->
+<!-- ![](./assets/collective-reducescatter.drawio.svg){width="50%"} -->
+<!---->
+<!-- ::: -->
+<!---->
+<!-- ::: -->
 
 
 # Collective Operations

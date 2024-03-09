@@ -25,42 +25,42 @@
     "href": "index.html#training-llms",
     "title": "Parallel Training Techniques",
     "section": "Training LLMs",
-    "text": "Training LLMs\n\n\n\n\n\n\n\n\n\nFigure 14: Visualization from Yang et al. (2023)"
+    "text": "Training LLMs\n\n\n\n\n\n\n\n\n\nFigure 13: Visualization from Yang et al. (2023)"
   },
   {
     "objectID": "index.html#life-cycle-of-the-llm",
     "href": "index.html#life-cycle-of-the-llm",
     "title": "Parallel Training Techniques",
     "section": "Life-Cycle of the LLM",
-    "text": "Life-Cycle of the LLM\n\n\n\n\nData collection + preprocessing\nPre-training\n\nArchitecture decisions:\n{model_size, hyperparameters,\nparallelism, lr_schedule, ...}\n\nSupervised Fine-Tuning\n\nInstruction Tuning\nAlignment\n\nDeploy (+ monitor, re-evaluate, etc.)\n\n\n\n\n\n\n\nPre-training: Virtually all of the compute used during pretraining phase.\n\n\nFigure 15: Figure from The Illustrated Transformer"
+    "text": "Life-Cycle of the LLM\n\n\n\n\nData collection + preprocessing\nPre-training\n\nArchitecture decisions:\n{model_size, hyperparameters,\nparallelism, lr_schedule, ...}\n\nSupervised Fine-Tuning\n\nInstruction Tuning\nAlignment\n\nDeploy (+ monitor, re-evaluate, etc.)\n\n\n\n\n\n\n\nPre-training: Virtually all of the compute used during pretraining phase.\n\n\nFigure 14: Figure from The Illustrated Transformer"
   },
   {
     "objectID": "index.html#forward-pass-1",
     "href": "index.html#forward-pass-1",
     "title": "Parallel Training Techniques",
     "section": "Forward Pass",
-    "text": "Forward Pass\n\n\n\n\n\n\n\nFigure 16: Language Model trained for causal language modeling. Video from: 🤗 Generation with LLMs"
+    "text": "Forward Pass\n\n\n\n\n\n\n\nFigure 15: Language Model trained for causal language modeling. Video from: 🤗 Generation with LLMs"
   },
   {
     "objectID": "index.html#generating-text",
     "href": "index.html#generating-text",
     "title": "Parallel Training Techniques",
     "section": "Generating Text",
-    "text": "Generating Text\n\n\n\n\n\n\n\nFigure 17: Language Model trained for causal language modeling. Video from: 🤗 Generation with LLMs"
+    "text": "Generating Text\n\n\n\n\n\n\n\nFigure 16: Language Model trained for causal language modeling. Video from: 🤗 Generation with LLMs"
   },
   {
     "objectID": "index.html#life-cycle-of-the-llm-pre-training",
     "href": "index.html#life-cycle-of-the-llm-pre-training",
     "title": "Parallel Training Techniques",
     "section": "Life-Cycle of the LLM: Pre-training",
-    "text": "Life-Cycle of the LLM: Pre-training\n\n\nFigure 18: Pre-training: Virtually all of the compute used during pretraining phase"
+    "text": "Life-Cycle of the LLM: Pre-training\n\n\nFigure 17: Pre-training: Virtually all of the compute used during pretraining phase"
   },
   {
     "objectID": "index.html#life-cycle-of-the-llm-fine-tuning",
     "href": "index.html#life-cycle-of-the-llm-fine-tuning",
     "title": "Parallel Training Techniques",
     "section": "Life-Cycle of the LLM: Fine-Tuning",
-    "text": "Life-Cycle of the LLM: Fine-Tuning\n\n\n\n\n\n\nFigure 19: Fine-tuning1: Fine-tuning actually updates the model’s weights to make the model better at a certain task.\n\n\n\nFigure from The Illustrated Transformer"
+    "text": "Life-Cycle of the LLM: Fine-Tuning\n\n\n\n\n\n\nFigure 18: Fine-tuning1: Fine-tuning actually updates the model’s weights to make the model better at a certain task.\n\n\n\nFigure from The Illustrated Transformer"
   },
   {
     "objectID": "index.html#assistant-models",
@@ -74,14 +74,14 @@
     "href": "index.html#saforem2wordplay",
     "title": "Parallel Training Techniques",
     "section": "saforem2/wordplay 🎮💬",
-    "text": "saforem2/wordplay 🎮💬\n\n\nFork of Andrej Karpathy’s nanoGPT\n\n\n\nFigure 20: The simplest, fastest repository for training / finetuning GPT based models."
+    "text": "saforem2/wordplay 🎮💬\n\n\nFork of Andrej Karpathy’s nanoGPT\n\n\n\nFigure 19: The simplest, fastest repository for training / finetuning GPT based models."
   },
   {
     "objectID": "index.html#saforem2wordplay-1",
     "href": "index.html#saforem2wordplay-1",
     "title": "Parallel Training Techniques",
     "section": "saforem2/wordplay 🎮💬",
-    "text": "saforem2/wordplay 🎮💬\n\n\n\n\n\n\n\n\n\n\n\n(a) nanoGPT\n\n\n\n\n\n\n\n\n\n\n\n(b) wordplay 🎮 💬\n\n\n\n\n\n\n\nFigure 21: nanoGPT, transformed."
+    "text": "saforem2/wordplay 🎮💬\n\n\n\n\n\n\n\n\n\n\n\n(a) nanoGPT\n\n\n\n\n\n\n\n\n\n\n\n(b) wordplay 🎮 💬\n\n\n\n\n\n\n\nFigure 20: nanoGPT, transformed."
   },
   {
     "objectID": "index.html#install",
