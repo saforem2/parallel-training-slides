@@ -86,14 +86,12 @@ format:
 
 ::: {.col1}
 
-[**[AI for Science Training Series](https://github.com/argonne-lcf/llm-workshop)**[^1]]{.dim-text}  
+[**[AI for Science Training Series](https://github.com/argonne-lcf/llm-workshop)**{.dim-text}  
 [Argonne National Laboratory]{.dim-text}  
 <br>
 
 [[{{< bi person-badge >}}Sam Foreman](https://samforeman.me)]{style="font-weight: 600;"}  
 [\[2024-03-12\]]{.dim-text style="font-size: 0.8em;"}  
-
-[^1]: on Supercomputers!!
 
 <br>
 
@@ -225,18 +223,7 @@ Reduce operation: one rank receives the reduction of input values across ranks
 
 :::
 
-<!-- ### `ReduceScatter` -->
-<!---->
-<!-- - Reduces, then scatters a list of tensors to all processes in a group. -->
-<!---->
-<!-- ::: {#fig-reducescatter} -->
-<!---->
-<!-- ![](./assets/collective-reducescatter.drawio.svg){width="50%"} -->
-<!---->
-<!-- ::: -->
-<!---->
-<!-- ::: -->
-
+:::
 
 # Collective Operations
 
@@ -485,7 +472,7 @@ This research used resources of the Argonne Leadership Computing Facility, which
 
 ## Forward Pass
 
-- Each worker has identical copy of model[^1]
+- Each worker has identical copy of model
 - **Global batch of data split across workers**
 - Loss + Grads averaged across workers before updating parameters
 
@@ -500,8 +487,6 @@ This research used resources of the Argonne Leadership Computing Facility, which
       S3 --> W3["Worker 3"]
       S4 --> W4["Worker 4"]
     ```
-
-[^1]: Test
 
 ## Organization
 

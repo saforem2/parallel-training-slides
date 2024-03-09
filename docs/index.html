@@ -504,10 +504,10 @@
 </section>
 <section id="parallel-training-techniques" class="title-slide slide level1 center">
 <h1>Parallel Training Techniques</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,-5, 35]">
+<div class="quarto-layout-panel" data-layout="[60,-5, 35]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
-<p><span class="dim-text"><strong><a href="https://github.com/argonne-lcf/llm-workshop">AI for Science Training Series</a></strong><sup>1</sup></span><br>
+<p>[<strong><a href="https://github.com/argonne-lcf/llm-workshop">AI for Science Training Series</a></strong>{.dim-text}<br>
 <span class="dim-text">Argonne National Laboratory</span><br>
 <br></p>
 <p><span style="font-weight: 600;"><a href="https://samforeman.me"><i class="bi-person-badge " style="" role="img" aria-hidden="true"></i>Sam Foreman</a></span><br>
@@ -549,7 +549,7 @@ Figure&nbsp;1: <span class="dim-text">Image from <a href="https://huggingface.co
 </div>
 </div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Test</p></li></ol></aside></section>
+</section>
 
 <section id="ai-compute" class="title-slide slide level1 centeredslide center" height="100%">
 <h1>AI 🤝 Compute</h1>
@@ -557,7 +557,7 @@ Figure&nbsp;1: <span class="dim-text">Image from <a href="https://huggingface.co
 <div class="dim-text" style="font-size: 0.55em;">
 <p>[…] since 2012, the amount of [AI] compute used has been increasing exponentially with a &gt; 34-month doubling time<sup>1</sup>, or [<strong>300,000</strong>x].</p>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>By comparison, Moore’s Law had a 2-year doubling period, and would have doubled 7x since 2012</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>By comparison, Moore’s Law had a 2-year doubling period, and would have doubled 7x since 2012</p></li></ol></aside></section>
 
 <section id="ai-compute-modern-era" class="title-slide slide level1 centeredslide center" height="100%">
 <h1>AI 🤝 Compute [Modern Era]</h1>
@@ -573,13 +573,13 @@ Figure&nbsp;2: [<strong>300,000</strong>x since 2012] vs [7x for Moore’s Law]
 Figure&nbsp;3: <strong>SLOW</strong> !! model size limited by GPU memory
 </p></section>
 
-<section>
 <section id="collective-communication" class="title-slide slide level1 smaller center">
 <h1>Collective Communication</h1>
 <p>Typically, we assign 1 <code>rank</code> to each GPU (or <code>accelerator</code>), i.e.&nbsp;<code>rank</code> <span class="math inline">\in</span> <code>[0, 1, ..., WORLD_SIZE-1]</code>.</p>
-<p>::: {.panel-tabset}</p>
-</section>
-<h3 id="allreduce"><code>AllReduce</code></h3>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>AllReduce</code></a></li><li><a href="#tabset-1-2"><code>Reduce</code></a></li><li><a href="#tabset-1-3"><code>Broadcast</code></a></li><li><a href="#tabset-1-4"><code>AllGather</code></a></li><li><a href="#tabset-1-5"><code>Scatter</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
 <ul>
 <li>Perform <em>reductions</em> on data (e.g.&nbsp;<code>sum</code>, <code>min</code>, <code>max</code>) across ranks, send result back to everyone</li>
 </ul>
@@ -593,7 +593,8 @@ Figure&nbsp;4: All-Reduce operation: each rank receives the reduction of input v
 </figcaption>
 </figure>
 </div>
-<h3 id="reduce"><code>Reduce</code></h3>
+</div>
+<div id="tabset-1-2">
 <ul>
 <li>Perform a <em>reduction</em> on data across ranks, send to individual</li>
 </ul>
@@ -607,7 +608,8 @@ Figure&nbsp;5: Reduce operation: one rank receives the reduction of input values
 </figcaption>
 </figure>
 </div>
-<h3 id="broadcast"><code>Broadcast</code></h3>
+</div>
+<div id="tabset-1-3">
 <ul>
 <li><code>broadcast</code> (<em>send</em>) a tensor <code><span class="math inline">x</span></code> from one rank to all ranks</li>
 </ul>
@@ -621,7 +623,8 @@ Figure&nbsp;6
 </figcaption>
 </figure>
 </div>
-<h3 id="allgather"><code>AllGather</code></h3>
+</div>
+<div id="tabset-1-4">
 <ul>
 <li>Gathers tensors from the whole group in a list.</li>
 </ul>
@@ -635,7 +638,8 @@ Figure&nbsp;7
 </figcaption>
 </figure>
 </div>
-<h3 id="scatter"><code>Scatter</code></h3>
+</div>
+<div id="tabset-1-5">
 <ul>
 <li>Scatters a list of tensors to the whole group</li>
 </ul>
@@ -649,17 +653,11 @@ Figure&nbsp;8
 </figcaption>
 </figure>
 </div>
-<!-- ### `ReduceScatter` -->
-<!---->
-<!-- - Reduces, then scatters a list of tensors to all processes in a group. -->
-<!---->
-<!-- ::: {#fig-reducescatter} -->
-<!---->
-<!-- ![](./assets/collective-reducescatter.drawio.svg){width="50%"} -->
-<!---->
-<!-- ::: -->
-<!---->
-<!-- ::: --></section>
+</div>
+</div>
+</div>
+</section>
+
 <section id="collective-operations" class="title-slide slide level1 center">
 <h1>Collective Operations</h1>
 <div title="⌛ Timeouts">
@@ -697,7 +695,7 @@ Figure&nbsp;8
 </ul></li>
 <li>See <a href="https://arxiv.org/abs/1708.03888">Large Batch Training of Convolutional Networks</a></li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn3"><p><code>micro_batch_size</code> = batch_size <strong>per</strong> GPU</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn2"><p><code>micro_batch_size</code> = batch_size <strong>per</strong> GPU</p></li></ol></aside></section>
 
 <section id="recent-progress" class="title-slide slide level1 center">
 <h1>Recent Progress</h1>
@@ -795,7 +793,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-3" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
+<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -822,7 +820,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-4" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
+<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -951,7 +949,7 @@ Figure&nbsp;11
 
 <section id="model-parallel-training" class="title-slide slide level1 center">
 <h1>Model Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
+<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -1014,7 +1012,7 @@ Figure&nbsp;12
 <section id="forward-pass" class="slide level2 center">
 <h2>Forward Pass</h2>
 <ul>
-<li>Each worker has identical copy of model<sup>1</sup></li>
+<li>Each worker has identical copy of model</li>
 <li><strong>Global batch of data split across workers</strong></li>
 <li>Loss + Grads averaged across workers before updating parameters</li>
 </ul>
@@ -1038,7 +1036,7 @@ Figure&nbsp;12
 </div>
 </div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn4"><p>Test</p></li></ol></aside></section>
+</section>
 <section id="organization" class="slide level2 center">
 <h2>Organization</h2>
 <div class="cell" data-reveal="true" data-layout-align="center">
@@ -1091,7 +1089,7 @@ Figure&nbsp;12
 <section>
 <section id="data-parallel-training-6" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
+<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -1249,7 +1247,7 @@ Figure&nbsp;18: <strong>Fine-tuning</strong><sup>1</sup>: Fine-tuning actually u
 </figcaption>
 </figure>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn5"><p>Figure from <a href="http://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a></p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>Figure from <a href="http://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a></p></li></ol></aside></section>
 <section id="assistant-models" class="slide level2 centeredslide center" data-background-color="#181D29">
 <h2>Assistant Models</h2>
 
@@ -1333,9 +1331,9 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <section id="model-model.py" class="slide level2 center" height="100%">
 <h2>Model <a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>model.py</code></a></h2>
 <div class="panel-tabset" style="height: 100%!important;">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-1-2"><code>LayerNorm</code></a></li><li><a href="#tabset-1-3"><code>MLP</code></a></li><li><a href="#tabset-1-4"><code>Block</code></a></li><li><a href="#tabset-1-5"><code>GPT</code></a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-2-2"><code>LayerNorm</code></a></li><li><a href="#tabset-2-3"><code>MLP</code></a></li><li><a href="#tabset-2-4"><code>Block</code></a></li><li><a href="#tabset-2-5"><code>GPT</code></a></li></ul>
 <div class="tab-content" style="height: 100%!important;">
-<div id="tabset-1-1">
+<div id="tabset-2-1">
 <div class="sourceCode" id="cb3" data-startfrom="65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 64;"><span id="cb3-65"><a></a><span class="kw">class</span> CausalSelfAttention(nn.Module):</span>
 <span id="cb3-66"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
 <span id="cb3-67"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -1428,7 +1426,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb3-154"><a></a>        y <span class="op">=</span> <span class="va">self</span>.resid_dropout(<span class="va">self</span>.c_proj(y))</span>
 <span id="cb3-155"><a></a>        <span class="cf">return</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-1-2">
+<div id="tabset-2-2">
 <div class="sourceCode" id="cb4" data-startfrom="43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 42;"><span id="cb4-43"><a></a><span class="kw">class</span> LayerNorm(nn.Module):</span>
 <span id="cb4-44"><a></a>    <span class="co">"""</span></span>
 <span id="cb4-45"><a></a><span class="co">    LayerNorm but with an optional bias.</span></span>
@@ -1450,7 +1448,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb4-61"><a></a>            <span class="fl">1e-5</span></span>
 <span id="cb4-62"><a></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-1-3">
+<div id="tabset-2-3">
 <div class="sourceCode" id="cb5" data-startfrom="165"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 164;"><span id="cb5-165"><a></a><span class="kw">class</span> MLP(nn.Module):</span>
 <span id="cb5-166"><a></a></span>
 <span id="cb5-167"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(</span>
@@ -1490,7 +1488,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb5-201"><a></a>        x <span class="op">=</span> <span class="va">self</span>.dropout(x)</span>
 <span id="cb5-202"><a></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-1-4">
+<div id="tabset-2-4">
 <div class="sourceCode" id="cb6" data-startfrom="205"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 204;"><span id="cb6-205"><a></a><span class="kw">class</span> Block(nn.Module):</span>
 <span id="cb6-206"><a></a></span>
 <span id="cb6-207"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
@@ -1505,7 +1503,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb6-216"><a></a>        x <span class="op">=</span> x <span class="op">+</span> <span class="va">self</span>.mlp(<span class="va">self</span>.ln_2(x))</span>
 <span id="cb6-217"><a></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-1-5">
+<div id="tabset-2-5">
 <div class="sourceCode" id="cb7" data-startfrom="220"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 219;"><span id="cb7-220"><a></a><span class="kw">class</span> GPT(nn.Module):</span>
 <span id="cb7-221"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
 <span id="cb7-222"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -1819,9 +1817,9 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <section id="trainer-trainer.py" class="slide level2 center" height="100%">
 <h2>Trainer <a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>trainer.py</code></a></h2>
 <div class="panel-tabset" style="font-size: 0.75em; width: 100%; height: 100%;">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>get_batch</code></a></li><li><a href="#tabset-2-2"><code>_forward_step</code></a></li><li><a href="#tabset-2-3"><code>_backward_step</code></a></li><li><a href="#tabset-2-4"><code>train_step</code></a></li><li><a href="#tabset-2-5"><code>estimate_loss</code></a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1"><code>get_batch</code></a></li><li><a href="#tabset-3-2"><code>_forward_step</code></a></li><li><a href="#tabset-3-3"><code>_backward_step</code></a></li><li><a href="#tabset-3-4"><code>train_step</code></a></li><li><a href="#tabset-3-5"><code>estimate_loss</code></a></li></ul>
 <div class="tab-content" style="font-size: 0.75em; width: 100%; height: 100%;">
-<div id="tabset-2-1">
+<div id="tabset-3-1">
 <div class="sourceCode" id="cb8" data-startfrom="460"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 459;"><span id="cb8-460"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
 <span id="cb8-461"><a></a>        <span class="co"># data = self.config.train_data if split == 'train'</span></span>
 <span id="cb8-462"><a></a>        <span class="co"># else self.config.val_data</span></span>
@@ -1852,7 +1850,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb8-487"><a></a>            y <span class="op">=</span> y.to(<span class="va">self</span>.config.device_type)</span>
 <span id="cb8-488"><a></a>        <span class="cf">return</span> x, y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-2">
+<div id="tabset-3-2">
 <div class="sourceCode" id="cb9" data-startfrom="548"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 547;"><span id="cb9-548"><a></a>    <span class="kw">def</span> _forward_step(<span class="va">self</span>, x: torch.Tensor, y: torch.Tensor) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
 <span id="cb9-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
 <span id="cb9-550"><a></a>        <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
@@ -1863,7 +1861,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb9-555"><a></a>            <span class="st">'dt'</span>: time.perf_counter() <span class="op">-</span> t0</span>
 <span id="cb9-556"><a></a>        }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-3">
+<div id="tabset-3-3">
 <div class="sourceCode" id="cb10" data-startfrom="558"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 557;"><span id="cb10-558"><a></a>    <span class="kw">def</span> _backward_step(</span>
 <span id="cb10-559"><a></a>            <span class="va">self</span>,</span>
 <span id="cb10-560"><a></a>            loss: torch.Tensor,</span>
@@ -1891,7 +1889,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb10-582"><a></a></span>
 <span id="cb10-583"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-4">
+<div id="tabset-3-4">
 <div class="sourceCode" id="cb11" data-startfrom="585"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 584;"><span id="cb11-585"><a></a>    <span class="kw">def</span> train_step(</span>
 <span id="cb11-586"><a></a>            <span class="va">self</span>,</span>
 <span id="cb11-587"><a></a>            x: torch.Tensor,</span>
@@ -1960,7 +1958,7 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <span id="cb11-650"><a></a>            <span class="st">'y'</span>: y,</span>
 <span id="cb11-651"><a></a>        }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-2-5">
+<div id="tabset-3-5">
 <div class="sourceCode" id="cb12" data-startfrom="500"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 499;"><span id="cb12-500"><a></a>    <span class="at">@torch.no_grad</span>()</span>
 <span id="cb12-501"><a></a>    <span class="kw">def</span> estimate_loss(<span class="va">self</span>):</span>
 <span id="cb12-502"><a></a>        out <span class="op">=</span> {}</span>
@@ -1985,16 +1983,16 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
 <div class="panel-tabset" style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">📒 Shakespeare</a></li><li><a href="#tabset-3-2">🔗 Links</a></li></ul>
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">📒 Shakespeare</a></li><li><a href="#tabset-4-2">🔗 Links</a></li></ul>
 <div class="tab-content" style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
-<div id="tabset-3-1">
+<div id="tabset-4-1">
 <ul>
 <li><a href="https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb"><img data-src="https://colab.research.google.com/assets/colab-badge.svg"></a><br>
 </li>
 <li><a href="https://github.com/saforem2/wordplay/blob/main/notebooks/shakespeare.ipynb"><code>shakespeare.ipynb</code></a></li>
 </ul>
 </div>
-<div id="tabset-3-2">
+<div id="tabset-4-2">
 <ul>
 <li><span style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt">📊 <a href="https://saforem2.github.io/llm-workshop-talk/#/llm-workshop-talk">Slides</a></span></li>
 <li><span style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt">🏡 <a href="https://saforem2.github.io/wordplay">Project Website</a></span></li>

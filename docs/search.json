@@ -4,7 +4,7 @@
     "href": "index.html#forward-pass",
     "title": "Parallel Training Techniques",
     "section": "Forward Pass",
-    "text": "Forward Pass\n\nEach worker has identical copy of model1\nGlobal batch of data split across workers\nLoss + Grads averaged across workers before updating parameters\n\n\n\n\n\n\n    flowchart TD\n      D[\"dataset\"] --&gt; S1[\"subset_1\"]\n      D --&gt; S2[\"subset_2\"]\n      D --&gt; S3[\"subset_3\"]\n      D --&gt; S4[\"subset_4\"]\n      S1 --&gt; W1[\"Worker 1\"]\n      S2 --&gt; W2[\"Worker 2\"]\n      S3 --&gt; W3[\"Worker 3\"]\n      S4 --&gt; W4[\"Worker 4\"]\n\n\n\n\n\n\nTest"
+    "text": "Forward Pass\n\nEach worker has identical copy of model\nGlobal batch of data split across workers\nLoss + Grads averaged across workers before updating parameters\n\n\n\n\n\n\n    flowchart TD\n      D[\"dataset\"] --&gt; S1[\"subset_1\"]\n      D --&gt; S2[\"subset_2\"]\n      D --&gt; S3[\"subset_3\"]\n      D --&gt; S4[\"subset_4\"]\n      S1 --&gt; W1[\"Worker 1\"]\n      S2 --&gt; W2[\"Worker 2\"]\n      S3 --&gt; W3[\"Worker 3\"]\n      S4 --&gt; W4[\"Worker 4\"]"
   },
   {
     "objectID": "index.html#organization",

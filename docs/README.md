@@ -33,7 +33,7 @@ exponentially with a \> 34-month doubling time[^1], or \[**300,000**x\].
 Typically, we assign 1 `rank` to each GPU (or `accelerator`),
 i.e. `rank` $\in$ `[0, 1, ..., WORLD_SIZE-1]`.
 
-::: {.panel-tabset}
+<div class="panel-tabset">
 
 ### `AllReduce`
 
@@ -70,17 +70,8 @@ style="width:50.0%" />
 - Scatters a list of tensors to the whole group
 
 <img src="./assets/collective-scatter.drawio.svg" style="width:50.0%" />
-<!-- ### `ReduceScatter` -->
-<!---->
-<!-- - Reduces, then scatters a list of tensors to all processes in a group. -->
-<!---->
-<!-- ::: {#fig-reducescatter} -->
-<!---->
-<!-- ![](./assets/collective-reducescatter.drawio.svg){width="50%"} -->
-<!---->
-<!-- ::: -->
-<!---->
-<!-- ::: -->
+
+</div>
 
 # Collective Operations
 
@@ -263,7 +254,7 @@ Contract DE-AC02-06CH11357.
 
 ## Forward Pass
 
-- Each worker has identical copy of model[^3]
+- Each worker has identical copy of model
 - **Global batch of data split across workers**
 - Loss + Grads averaged across workers before updating parameters
 
@@ -1159,5 +1150,3 @@ Problem Solving with Large Language Models.”
     have doubled 7x since 2012
 
 [^2]: `micro_batch_size` = batch_size **per** GPU
-
-[^3]: Test
