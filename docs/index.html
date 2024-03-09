@@ -504,7 +504,7 @@
 </section>
 <section id="parallel-training-techniques" class="title-slide slide level1 center">
 <h1>Parallel Training Techniques</h1>
-<div class="quarto-layout-panel" data-layout="[60,-5, 35]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,-5, 35]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <p><span class="dim-text"><strong><a href="https://github.com/argonne-lcf/llm-workshop">AI for Science Training Series</a></strong><sup>1</sup></span><br>
@@ -795,7 +795,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-3" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -822,7 +822,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-4" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -951,7 +951,7 @@ Figure&nbsp;11
 
 <section id="model-parallel-training" class="title-slide slide level1 center">
 <h1>Model Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -1091,7 +1091,7 @@ Figure&nbsp;12
 <section>
 <section id="data-parallel-training-6" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -1336,19 +1336,483 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-1-2"><code>LayerNorm</code></a></li><li><a href="#tabset-1-3"><code>MLP</code></a></li><li><a href="#tabset-1-4"><code>Block</code></a></li><li><a href="#tabset-1-5"><code>GPT</code></a></li></ul>
 <div class="tab-content" style="height: 100%!important;">
 <div id="tabset-1-1">
-<div class="sourceCode" id="cb3" data-start-line="64" data-end-line="155"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3" data-startfrom="64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 63;"><span id="cb3-64"><a></a></span>
+<span id="cb3-65"><a></a><span class="kw">class</span> CausalSelfAttention(nn.Module):</span>
+<span id="cb3-66"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
+<span id="cb3-67"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb3-68"><a></a>        <span class="cf">assert</span> config.n_embd <span class="op">%</span> config.n_head <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb3-69"><a></a>        <span class="co"># key, query, value projections for all heads, but in a batch</span></span>
+<span id="cb3-70"><a></a>        <span class="va">self</span>.c_attn <span class="op">=</span> nn.Linear(</span>
+<span id="cb3-71"><a></a>            config.n_embd,</span>
+<span id="cb3-72"><a></a>            <span class="dv">3</span> <span class="op">*</span> config.n_embd,</span>
+<span id="cb3-73"><a></a>            bias<span class="op">=</span>config.bias</span>
+<span id="cb3-74"><a></a>        )</span>
+<span id="cb3-75"><a></a>        <span class="co"># output projection</span></span>
+<span id="cb3-76"><a></a>        <span class="va">self</span>.c_proj <span class="op">=</span> nn.Linear(</span>
+<span id="cb3-77"><a></a>            config.n_embd,</span>
+<span id="cb3-78"><a></a>            config.n_embd,</span>
+<span id="cb3-79"><a></a>            bias<span class="op">=</span>config.bias</span>
+<span id="cb3-80"><a></a>        )</span>
+<span id="cb3-81"><a></a>        <span class="co"># regularization</span></span>
+<span id="cb3-82"><a></a>        <span class="va">self</span>.attn_dropout <span class="op">=</span> nn.Dropout(config.dropout)</span>
+<span id="cb3-83"><a></a>        <span class="va">self</span>.resid_dropout <span class="op">=</span> nn.Dropout(config.dropout)</span>
+<span id="cb3-84"><a></a>        <span class="va">self</span>.n_head <span class="op">=</span> config.n_head</span>
+<span id="cb3-85"><a></a>        <span class="va">self</span>.n_embd <span class="op">=</span> config.n_embd</span>
+<span id="cb3-86"><a></a>        <span class="va">self</span>.dropout <span class="op">=</span> config.dropout</span>
+<span id="cb3-87"><a></a>        <span class="co"># flash attention make GPU go brrrrr but support is only in</span></span>
+<span id="cb3-88"><a></a>        <span class="co"># PyTorch &gt;= 2.0</span></span>
+<span id="cb3-89"><a></a>        <span class="va">self</span>.flash <span class="op">=</span> <span class="bu">hasattr</span>(</span>
+<span id="cb3-90"><a></a>            torch.nn.functional,</span>
+<span id="cb3-91"><a></a>            <span class="st">'scaled_dot_product_attention'</span></span>
+<span id="cb3-92"><a></a>        )</span>
+<span id="cb3-93"><a></a>        <span class="co"># if self.flash and RANK == 0:</span></span>
+<span id="cb3-94"><a></a>        <span class="co">#     log.warning(</span></span>
+<span id="cb3-95"><a></a>        <span class="co">#         f'Using torch.nn.functional.scaled_dot_product_attention'</span></span>
+<span id="cb3-96"><a></a>        <span class="co">#         '(Flash Attn)'</span></span>
+<span id="cb3-97"><a></a>        <span class="co">#     )</span></span>
+<span id="cb3-98"><a></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.flash:</span>
+<span id="cb3-99"><a></a>            log.warning(</span>
+<span id="cb3-100"><a></a>                <span class="st">"WARNING: using slow attention."</span></span>
+<span id="cb3-101"><a></a>                <span class="st">"Flash Attention requires PyTorch &gt;= 2.0"</span></span>
+<span id="cb3-102"><a></a>            )</span>
+<span id="cb3-103"><a></a>            <span class="co"># causal mask to ensure that attention is only applied to the left</span></span>
+<span id="cb3-104"><a></a>            <span class="co"># in the input sequence</span></span>
+<span id="cb3-105"><a></a>            <span class="va">self</span>.register_buffer(</span>
+<span id="cb3-106"><a></a>                <span class="st">"bias"</span>,</span>
+<span id="cb3-107"><a></a>                torch.tril(</span>
+<span id="cb3-108"><a></a>                    torch.ones(</span>
+<span id="cb3-109"><a></a>                        config.block_size,</span>
+<span id="cb3-110"><a></a>                        config.block_size</span>
+<span id="cb3-111"><a></a>                    )</span>
+<span id="cb3-112"><a></a>                ).view(<span class="dv">1</span>, <span class="dv">1</span>, config.block_size, config.block_size)</span>
+<span id="cb3-113"><a></a>            )</span>
+<span id="cb3-114"><a></a></span>
+<span id="cb3-115"><a></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb3-116"><a></a>        <span class="co"># batch size, sequence length, embedding dimensionality (n_embd)</span></span>
+<span id="cb3-117"><a></a>        B, T, C <span class="op">=</span> x.size()</span>
+<span id="cb3-118"><a></a></span>
+<span id="cb3-119"><a></a>        <span class="co"># calculate query, key, values for all heads in batch and move head</span></span>
+<span id="cb3-120"><a></a>        <span class="co"># forward to be the batch dim</span></span>
+<span id="cb3-121"><a></a>        q, k, v <span class="op">=</span> <span class="va">self</span>.c_attn(x).split(<span class="va">self</span>.n_embd, dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-122"><a></a>        <span class="co"># (B, nh, T, hs)</span></span>
+<span id="cb3-123"><a></a>        k <span class="op">=</span> k.view(B, T, <span class="va">self</span>.n_head, C <span class="op">//</span> <span class="va">self</span>.n_head).transpose(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb3-124"><a></a>        <span class="co"># (B, nh, T, hs)</span></span>
+<span id="cb3-125"><a></a>        q <span class="op">=</span> q.view(B, T, <span class="va">self</span>.n_head, C <span class="op">//</span> <span class="va">self</span>.n_head).transpose(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb3-126"><a></a>        <span class="co"># (B, nh, T, hs)</span></span>
+<span id="cb3-127"><a></a>        v <span class="op">=</span> v.view(B, T, <span class="va">self</span>.n_head, C <span class="op">//</span> <span class="va">self</span>.n_head).transpose(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb3-128"><a></a>        <span class="co"># causal self-attention; Self-attend:</span></span>
+<span id="cb3-129"><a></a>        <span class="co"># (B, nh, T, hs) x (B, nh, hs, T) -&gt; (B, nh, T, T)</span></span>
+<span id="cb3-130"><a></a>        <span class="cf">if</span> <span class="va">self</span>.flash:</span>
+<span id="cb3-131"><a></a>            <span class="co"># efficient attention using Flash Attention CUDA kernels</span></span>
+<span id="cb3-132"><a></a>            y <span class="op">=</span> torch.nn.functional.scaled_dot_product_attention(</span>
+<span id="cb3-133"><a></a>                q,</span>
+<span id="cb3-134"><a></a>                k,</span>
+<span id="cb3-135"><a></a>                v,</span>
+<span id="cb3-136"><a></a>                attn_mask<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb3-137"><a></a>                dropout_p<span class="op">=</span>(<span class="va">self</span>.dropout <span class="cf">if</span> <span class="va">self</span>.training <span class="cf">else</span> <span class="dv">0</span>),</span>
+<span id="cb3-138"><a></a>                is_causal<span class="op">=</span><span class="va">True</span></span>
+<span id="cb3-139"><a></a>            )</span>
+<span id="cb3-140"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb3-141"><a></a>            <span class="co"># manual implementation of attention</span></span>
+<span id="cb3-142"><a></a>            att <span class="op">=</span> (q <span class="op">@</span> k.transpose(<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>)) <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">/</span> math.sqrt(k.size(<span class="op">-</span><span class="dv">1</span>)))</span>
+<span id="cb3-143"><a></a>            att <span class="op">=</span> att.masked_fill(</span>
+<span id="cb3-144"><a></a>                <span class="va">self</span>.bias[:, :, :T, :T] <span class="op">==</span> <span class="dv">0</span>,  <span class="co"># type:ignore</span></span>
+<span id="cb3-145"><a></a>                <span class="bu">float</span>(<span class="st">'-inf'</span>)</span>
+<span id="cb3-146"><a></a>            )</span>
+<span id="cb3-147"><a></a>            att <span class="op">=</span> F.softmax(att, dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb3-148"><a></a>            att <span class="op">=</span> <span class="va">self</span>.attn_dropout(att)</span>
+<span id="cb3-149"><a></a>            y <span class="op">=</span> att <span class="op">@</span> v  <span class="co"># (B, nh, T, T) x (B, nh, T, hs) -&gt; (B, nh, T, hs)</span></span>
+<span id="cb3-150"><a></a>        <span class="co"># re-assemble all head outputs side by side</span></span>
+<span id="cb3-151"><a></a>        y <span class="op">=</span> y.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(B, T, C)</span>
+<span id="cb3-152"><a></a></span>
+<span id="cb3-153"><a></a>        <span class="co"># output projection</span></span>
+<span id="cb3-154"><a></a>        y <span class="op">=</span> <span class="va">self</span>.resid_dropout(<span class="va">self</span>.c_proj(y))</span>
+<span id="cb3-155"><a></a>        <span class="cf">return</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-2">
-<div class="sourceCode" id="cb4" data-start-line="43" data-end-line="62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4" data-startfrom="43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 42;"><span id="cb4-43"><a></a><span class="kw">class</span> LayerNorm(nn.Module):</span>
+<span id="cb4-44"><a></a>    <span class="co">"""</span></span>
+<span id="cb4-45"><a></a><span class="co">    LayerNorm but with an optional bias.</span></span>
+<span id="cb4-46"><a></a></span>
+<span id="cb4-47"><a></a><span class="co">    (PyTorch doesn't support simply bias=False)</span></span>
+<span id="cb4-48"><a></a><span class="co">    """</span></span>
+<span id="cb4-49"><a></a></span>
+<span id="cb4-50"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ndim, bias):</span>
+<span id="cb4-51"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb4-52"><a></a>        <span class="va">self</span>.weight <span class="op">=</span> nn.Parameter(torch.ones(ndim))</span>
+<span id="cb4-53"><a></a>        <span class="va">self</span>.bias <span class="op">=</span> nn.Parameter(torch.zeros(ndim)) <span class="cf">if</span> bias <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb4-54"><a></a></span>
+<span id="cb4-55"><a></a>    <span class="kw">def</span> forward(<span class="va">self</span>, <span class="bu">input</span>):</span>
+<span id="cb4-56"><a></a>        <span class="cf">return</span> F.layer_norm(</span>
+<span id="cb4-57"><a></a>            <span class="bu">input</span>,</span>
+<span id="cb4-58"><a></a>            <span class="va">self</span>.weight.shape,</span>
+<span id="cb4-59"><a></a>            <span class="va">self</span>.weight,</span>
+<span id="cb4-60"><a></a>            <span class="va">self</span>.bias,</span>
+<span id="cb4-61"><a></a>            <span class="fl">1e-5</span></span>
+<span id="cb4-62"><a></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-3">
-<div class="sourceCode" id="cb5" data-start-line="165" data-end-line="202"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5" data-startfrom="165"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 164;"><span id="cb5-165"><a></a><span class="kw">class</span> MLP(nn.Module):</span>
+<span id="cb5-166"><a></a></span>
+<span id="cb5-167"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(</span>
+<span id="cb5-168"><a></a>            <span class="va">self</span>,</span>
+<span id="cb5-169"><a></a>            config: GPTModelConfig,</span>
+<span id="cb5-170"><a></a>            activation: <span class="bu">str</span> <span class="op">=</span> <span class="st">'gelu'</span>,</span>
+<span id="cb5-171"><a></a>    ):</span>
+<span id="cb5-172"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb5-173"><a></a>        <span class="va">self</span>.c_fc <span class="op">=</span> nn.Linear(</span>
+<span id="cb5-174"><a></a>            config.n_embd,</span>
+<span id="cb5-175"><a></a>            <span class="dv">4</span> <span class="op">*</span> config.n_embd,</span>
+<span id="cb5-176"><a></a>            bias<span class="op">=</span>config.bias</span>
+<span id="cb5-177"><a></a>        )</span>
+<span id="cb5-178"><a></a>        <span class="cf">if</span> activation.lower() <span class="kw">in</span> ACTIVATIONS:</span>
+<span id="cb5-179"><a></a>            <span class="va">self</span>.act_fn <span class="op">=</span> ACTIVATIONS[activation.lower()]</span>
+<span id="cb5-180"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb5-181"><a></a>            <span class="cf">try</span>:</span>
+<span id="cb5-182"><a></a>                act_fn <span class="op">=</span> <span class="bu">getattr</span>(nn, activation)</span>
+<span id="cb5-183"><a></a>                <span class="cf">assert</span> <span class="bu">callable</span>(act_fn)</span>
+<span id="cb5-184"><a></a>                <span class="va">self</span>.act_fn <span class="op">=</span> act_fn()</span>
+<span id="cb5-185"><a></a>            <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> exc:</span>
+<span id="cb5-186"><a></a>                log.error(<span class="ss">f'</span><span class="sc">{</span>activation<span class="sc">}</span><span class="ss"> not yet supported!'</span>)</span>
+<span id="cb5-187"><a></a>                <span class="cf">raise</span> exc</span>
+<span id="cb5-188"><a></a>        <span class="co"># self.gelu = nn.GELU()</span></span>
+<span id="cb5-189"><a></a>        <span class="va">self</span>.c_proj <span class="op">=</span> nn.Linear(</span>
+<span id="cb5-190"><a></a>            <span class="dv">4</span> <span class="op">*</span> config.n_embd,</span>
+<span id="cb5-191"><a></a>            config.n_embd,</span>
+<span id="cb5-192"><a></a>            bias<span class="op">=</span>config.bias</span>
+<span id="cb5-193"><a></a>        )</span>
+<span id="cb5-194"><a></a>        <span class="va">self</span>.dropout <span class="op">=</span> nn.Dropout(config.dropout)</span>
+<span id="cb5-195"><a></a></span>
+<span id="cb5-196"><a></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb5-197"><a></a>        x <span class="op">=</span> <span class="va">self</span>.c_fc(x)</span>
+<span id="cb5-198"><a></a>        <span class="co"># x = self.gelu(x)</span></span>
+<span id="cb5-199"><a></a>        x <span class="op">=</span> <span class="va">self</span>.act_fn(x)</span>
+<span id="cb5-200"><a></a>        x <span class="op">=</span> <span class="va">self</span>.c_proj(x)</span>
+<span id="cb5-201"><a></a>        x <span class="op">=</span> <span class="va">self</span>.dropout(x)</span>
+<span id="cb5-202"><a></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-4">
-<div class="sourceCode" id="cb6" data-start-line="205" data-end-line="217"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6" data-startfrom="205"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 204;"><span id="cb6-205"><a></a><span class="kw">class</span> Block(nn.Module):</span>
+<span id="cb6-206"><a></a></span>
+<span id="cb6-207"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
+<span id="cb6-208"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb6-209"><a></a>        <span class="va">self</span>.ln_1 <span class="op">=</span> LayerNorm(config.n_embd, bias<span class="op">=</span>config.bias)</span>
+<span id="cb6-210"><a></a>        <span class="va">self</span>.attn <span class="op">=</span> CausalSelfAttention(config)</span>
+<span id="cb6-211"><a></a>        <span class="va">self</span>.ln_2 <span class="op">=</span> LayerNorm(config.n_embd, bias<span class="op">=</span>config.bias)</span>
+<span id="cb6-212"><a></a>        <span class="va">self</span>.mlp <span class="op">=</span> MLP(config)</span>
+<span id="cb6-213"><a></a></span>
+<span id="cb6-214"><a></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb6-215"><a></a>        x <span class="op">=</span> x <span class="op">+</span> <span class="va">self</span>.attn(<span class="va">self</span>.ln_1(x))</span>
+<span id="cb6-216"><a></a>        x <span class="op">=</span> x <span class="op">+</span> <span class="va">self</span>.mlp(<span class="va">self</span>.ln_2(x))</span>
+<span id="cb6-217"><a></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-5">
-<div class="sourceCode" id="cb7" data-start-line="220" data-end-line="525"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7" data-startfrom="220"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 219;"><span id="cb7-220"><a></a><span class="kw">class</span> GPT(nn.Module):</span>
+<span id="cb7-221"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
+<span id="cb7-222"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb7-223"><a></a>        <span class="cf">assert</span> config.vocab_size <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb7-224"><a></a>        <span class="cf">assert</span> config.block_size <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb7-225"><a></a>        <span class="va">self</span>.config <span class="op">=</span> config</span>
+<span id="cb7-226"><a></a></span>
+<span id="cb7-227"><a></a>        <span class="va">self</span>.transformer <span class="op">=</span> nn.ModuleDict(<span class="bu">dict</span>(</span>
+<span id="cb7-228"><a></a>            wte<span class="op">=</span>nn.Embedding(config.vocab_size, config.n_embd),</span>
+<span id="cb7-229"><a></a>            wpe<span class="op">=</span>nn.Embedding(config.block_size, config.n_embd),</span>
+<span id="cb7-230"><a></a>            drop<span class="op">=</span>nn.Dropout(config.dropout),</span>
+<span id="cb7-231"><a></a>            h<span class="op">=</span>nn.ModuleList([Block(config) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(config.n_layer)]),</span>
+<span id="cb7-232"><a></a>            ln_f<span class="op">=</span>LayerNorm(config.n_embd, bias<span class="op">=</span>config.bias),</span>
+<span id="cb7-233"><a></a>        ))</span>
+<span id="cb7-234"><a></a>        <span class="va">self</span>.lm_head <span class="op">=</span> nn.Linear(config.n_embd, config.vocab_size, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-235"><a></a>        <span class="co"># with weight tying when using torch.compile() some warnings get</span></span>
+<span id="cb7-236"><a></a>        <span class="co"># generated: "UserWarning: functional_call was passed multiple values</span></span>
+<span id="cb7-237"><a></a>        <span class="co"># for tied weights. This behavior is deprecated and will be an error in</span></span>
+<span id="cb7-238"><a></a>        <span class="co"># future versions" not 100% sure what this is, so far seems to be</span></span>
+<span id="cb7-239"><a></a>        <span class="co"># harmless. </span><span class="al">TODO</span><span class="co"> investigate</span></span>
+<span id="cb7-240"><a></a>        <span class="co"># https://paperswithcode.com/method/weight-tying</span></span>
+<span id="cb7-241"><a></a>        <span class="va">self</span>.transformer.wte.weight <span class="op">=</span> <span class="va">self</span>.lm_head.weight  <span class="co"># type:ignore</span></span>
+<span id="cb7-242"><a></a></span>
+<span id="cb7-243"><a></a>        <span class="co"># init all weights</span></span>
+<span id="cb7-244"><a></a>        <span class="va">self</span>.<span class="bu">apply</span>(<span class="va">self</span>._init_weights)</span>
+<span id="cb7-245"><a></a>        <span class="co"># apply special scaled init to the residual projections, per GPT-2</span></span>
+<span id="cb7-246"><a></a>        <span class="cf">for</span> pn, p <span class="kw">in</span> <span class="va">self</span>.named_parameters():</span>
+<span id="cb7-247"><a></a>            <span class="cf">if</span> pn.endswith(<span class="st">'c_proj.weight'</span>):</span>
+<span id="cb7-248"><a></a>                torch.nn.init.normal_(</span>
+<span id="cb7-249"><a></a>                    p,</span>
+<span id="cb7-250"><a></a>                    mean<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb7-251"><a></a>                    std<span class="op">=</span><span class="fl">0.02</span><span class="op">/</span>math.sqrt(<span class="dv">2</span> <span class="op">*</span> config.n_layer)</span>
+<span id="cb7-252"><a></a>                )</span>
+<span id="cb7-253"><a></a></span>
+<span id="cb7-254"><a></a>        <span class="co"># report number of parameters</span></span>
+<span id="cb7-255"><a></a>        log.info(<span class="st">"number of parameters: </span><span class="sc">%.2f</span><span class="st">M"</span> <span class="op">%</span> (<span class="va">self</span>.get_num_params()<span class="op">/</span><span class="fl">1e6</span>,))</span>
+<span id="cb7-256"><a></a></span>
+<span id="cb7-257"><a></a>    <span class="kw">def</span> get_num_params(<span class="va">self</span>, non_embedding<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb7-258"><a></a>        <span class="co">"""</span></span>
+<span id="cb7-259"><a></a><span class="co">        Return the number of parameters in the model.</span></span>
+<span id="cb7-260"><a></a><span class="co">        For non-embedding count (default), the position embeddings get</span></span>
+<span id="cb7-261"><a></a><span class="co">        subtracted.</span></span>
+<span id="cb7-262"><a></a></span>
+<span id="cb7-263"><a></a><span class="co">        The token embeddings would too, except due to the parameter sharing</span></span>
+<span id="cb7-264"><a></a><span class="co">        these params are actually used as weights in the final layer, so we</span></span>
+<span id="cb7-265"><a></a><span class="co">        include them.</span></span>
+<span id="cb7-266"><a></a><span class="co">        """</span></span>
+<span id="cb7-267"><a></a>        n_params <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> <span class="va">self</span>.parameters())</span>
+<span id="cb7-268"><a></a>        <span class="cf">if</span> non_embedding:</span>
+<span id="cb7-269"><a></a>            n_params <span class="op">-=</span> <span class="va">self</span>.transformer.wpe.weight.numel()  <span class="co"># type:ignore</span></span>
+<span id="cb7-270"><a></a>        <span class="cf">return</span> n_params</span>
+<span id="cb7-271"><a></a></span>
+<span id="cb7-272"><a></a>    <span class="kw">def</span> _init_weights(<span class="va">self</span>, module):</span>
+<span id="cb7-273"><a></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(module, nn.Linear):</span>
+<span id="cb7-274"><a></a>            torch.nn.init.normal_(module.weight, mean<span class="op">=</span><span class="fl">0.0</span>, std<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb7-275"><a></a>            <span class="cf">if</span> module.bias <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-276"><a></a>                torch.nn.init.zeros_(module.bias)</span>
+<span id="cb7-277"><a></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(module, nn.Embedding):</span>
+<span id="cb7-278"><a></a>            torch.nn.init.normal_(module.weight, mean<span class="op">=</span><span class="fl">0.0</span>, std<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb7-279"><a></a></span>
+<span id="cb7-280"><a></a>    <span class="kw">def</span> forward(<span class="va">self</span>, idx, targets<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb7-281"><a></a>        device <span class="op">=</span> idx.device</span>
+<span id="cb7-282"><a></a>        b, t <span class="op">=</span> idx.size()</span>
+<span id="cb7-283"><a></a>        <span class="cf">assert</span> t <span class="op">&lt;=</span> <span class="va">self</span>.config.block_size, (</span>
+<span id="cb7-284"><a></a>            <span class="ss">f"Cannot forward sequence of length </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">, "</span></span>
+<span id="cb7-285"><a></a>            <span class="st">"block size is only </span><span class="sc">{self.config.block_size}</span><span class="st">"</span></span>
+<span id="cb7-286"><a></a>        )</span>
+<span id="cb7-287"><a></a>        pos <span class="op">=</span> torch.arange(</span>
+<span id="cb7-288"><a></a>            <span class="dv">0</span>,</span>
+<span id="cb7-289"><a></a>            t,</span>
+<span id="cb7-290"><a></a>            dtype<span class="op">=</span>torch.<span class="bu">long</span>,</span>
+<span id="cb7-291"><a></a>            device<span class="op">=</span>device</span>
+<span id="cb7-292"><a></a>        )  <span class="co"># shape (t)</span></span>
+<span id="cb7-293"><a></a></span>
+<span id="cb7-294"><a></a>        <span class="co"># forward the GPT model itself</span></span>
+<span id="cb7-295"><a></a>        <span class="co"># token embeddings of shape (b, t, n_embd)</span></span>
+<span id="cb7-296"><a></a>        tok_emb <span class="op">=</span> <span class="va">self</span>.transformer.wte(idx)  <span class="co"># type:ignore</span></span>
+<span id="cb7-297"><a></a>        <span class="co"># position embeddings of shape (t, n_embd)</span></span>
+<span id="cb7-298"><a></a>        pos_emb <span class="op">=</span> <span class="va">self</span>.transformer.wpe(pos)  <span class="co"># type:ignore</span></span>
+<span id="cb7-299"><a></a>        x <span class="op">=</span> <span class="va">self</span>.transformer.drop(tok_emb <span class="op">+</span> pos_emb)  <span class="co"># type:ignore</span></span>
+<span id="cb7-300"><a></a>        <span class="cf">for</span> block <span class="kw">in</span> <span class="va">self</span>.transformer.h:  <span class="co"># type:ignore</span></span>
+<span id="cb7-301"><a></a>            x <span class="op">=</span> block(x)</span>
+<span id="cb7-302"><a></a>        x <span class="op">=</span> <span class="va">self</span>.transformer.ln_f(x)  <span class="co"># type:ignore</span></span>
+<span id="cb7-303"><a></a>        <span class="cf">if</span> targets <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-304"><a></a>            <span class="co"># if we are given some desired targets also calculate the loss</span></span>
+<span id="cb7-305"><a></a>            logits <span class="op">=</span> <span class="va">self</span>.lm_head(x)</span>
+<span id="cb7-306"><a></a>            loss <span class="op">=</span> F.cross_entropy(</span>
+<span id="cb7-307"><a></a>                logits.view(</span>
+<span id="cb7-308"><a></a>                    <span class="op">-</span><span class="dv">1</span>,</span>
+<span id="cb7-309"><a></a>                    logits.size(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb7-310"><a></a>                ),</span>
+<span id="cb7-311"><a></a>                targets.view(<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb7-312"><a></a>                ignore_index<span class="op">=-</span><span class="dv">1</span></span>
+<span id="cb7-313"><a></a>            )</span>
+<span id="cb7-314"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb7-315"><a></a>            <span class="co"># inference-time mini-optimization: only forward the lm_head on the</span></span>
+<span id="cb7-316"><a></a>            <span class="co"># very last position</span></span>
+<span id="cb7-317"><a></a>            <span class="co"># note: using list [-1] to preserve the time dim</span></span>
+<span id="cb7-318"><a></a>            logits <span class="op">=</span> <span class="va">self</span>.lm_head(x[:, [<span class="op">-</span><span class="dv">1</span>], :])</span>
+<span id="cb7-319"><a></a>            loss <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb7-320"><a></a></span>
+<span id="cb7-321"><a></a>        <span class="cf">return</span> logits, loss</span>
+<span id="cb7-322"><a></a></span>
+<span id="cb7-323"><a></a>    <span class="kw">def</span> crop_block_size(<span class="va">self</span>, block_size):</span>
+<span id="cb7-324"><a></a>        <span class="co"># model surgery to decrease the block size if necessary e.g. we may</span></span>
+<span id="cb7-325"><a></a>        <span class="co"># load the GPT2 pretrained model checkpoint (block size 1024) but want</span></span>
+<span id="cb7-326"><a></a>        <span class="co"># to use a smaller block size for some smaller, simpler model</span></span>
+<span id="cb7-327"><a></a>        <span class="cf">assert</span> block_size <span class="op">&lt;=</span> <span class="va">self</span>.config.block_size</span>
+<span id="cb7-328"><a></a>        <span class="va">self</span>.config.block_size <span class="op">=</span> block_size</span>
+<span id="cb7-329"><a></a>        <span class="va">self</span>.transformer.wpe.weight <span class="op">=</span> (  <span class="co"># type:ignore</span></span>
+<span id="cb7-330"><a></a>            nn.Parameter(</span>
+<span id="cb7-331"><a></a>                <span class="va">self</span>.transformer.wpe.weight[:block_size]  <span class="co"># type:ignore</span></span>
+<span id="cb7-332"><a></a>            )</span>
+<span id="cb7-333"><a></a>        )</span>
+<span id="cb7-334"><a></a>        <span class="cf">for</span> block <span class="kw">in</span> <span class="va">self</span>.transformer.h:   <span class="co"># type:ignore</span></span>
+<span id="cb7-335"><a></a>            <span class="cf">if</span> <span class="bu">hasattr</span>(block.attn, <span class="st">'bias'</span>):</span>
+<span id="cb7-336"><a></a>                block.attn.bias <span class="op">=</span> (</span>
+<span id="cb7-337"><a></a>                    block.attn.bias[:, :, :block_size, :block_size]</span>
+<span id="cb7-338"><a></a>                )</span>
+<span id="cb7-339"><a></a></span>
+<span id="cb7-340"><a></a>    <span class="at">@classmethod</span></span>
+<span id="cb7-341"><a></a>    <span class="kw">def</span> from_pretrained(cls, model_type, override_args<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb7-342"><a></a>        <span class="cf">assert</span> model_type <span class="kw">in</span> {<span class="st">'gpt2'</span>, <span class="st">'gpt2-medium'</span>, <span class="st">'gpt2-large'</span>, <span class="st">'gpt2-xl'</span>}</span>
+<span id="cb7-343"><a></a>        override_args <span class="op">=</span> override_args <span class="kw">or</span> {}  <span class="co"># default to empty dict</span></span>
+<span id="cb7-344"><a></a>        <span class="co"># only dropout can be overridden see more notes below</span></span>
+<span id="cb7-345"><a></a>        <span class="cf">assert</span> <span class="bu">all</span>(k <span class="op">==</span> <span class="st">'dropout'</span> <span class="cf">for</span> k <span class="kw">in</span> override_args)</span>
+<span id="cb7-346"><a></a>        <span class="im">from</span> transformers <span class="im">import</span> GPT2LMHeadModel</span>
+<span id="cb7-347"><a></a>        log.info(<span class="ss">f"loading weights from pretrained gpt: </span><span class="sc">{</span>model_type<span class="op">=</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-348"><a></a>        <span class="co"># n_layer, n_head and n_embd are determined from model_type</span></span>
+<span id="cb7-349"><a></a>        <span class="co"># gpt2: 124M params</span></span>
+<span id="cb7-350"><a></a>        <span class="co"># gpt2-medium: 350M params</span></span>
+<span id="cb7-351"><a></a>        <span class="co"># gpt2-large: 774M params</span></span>
+<span id="cb7-352"><a></a>        <span class="co"># gpt2-xl: 1558M params</span></span>
+<span id="cb7-353"><a></a>        config_args <span class="op">=</span> {</span>
+<span id="cb7-354"><a></a>            <span class="co"># 'baby-llama2': dict(n_layer=16, n_head=16, n_embed=1024),</span></span>
+<span id="cb7-355"><a></a>            <span class="co"># 'llama2-7b': dict(n_layer=32, n_head=32, n_embd=4096),</span></span>
+<span id="cb7-356"><a></a>            <span class="st">'gpt2'</span>: <span class="bu">dict</span>(n_layer<span class="op">=</span><span class="dv">12</span>, n_head<span class="op">=</span><span class="dv">12</span>, n_embd<span class="op">=</span><span class="dv">768</span>),</span>
+<span id="cb7-357"><a></a>            <span class="st">'gpt2-medium'</span>: <span class="bu">dict</span>(n_layer<span class="op">=</span><span class="dv">24</span>, n_head<span class="op">=</span><span class="dv">16</span>, n_embd<span class="op">=</span><span class="dv">1024</span>),</span>
+<span id="cb7-358"><a></a>            <span class="st">'gpt2-large'</span>: <span class="bu">dict</span>(n_layer<span class="op">=</span><span class="dv">36</span>, n_head<span class="op">=</span><span class="dv">20</span>, n_embd<span class="op">=</span><span class="dv">1280</span>),</span>
+<span id="cb7-359"><a></a>            <span class="st">'gpt2-xl'</span>: <span class="bu">dict</span>(n_layer<span class="op">=</span><span class="dv">48</span>, n_head<span class="op">=</span><span class="dv">25</span>, n_embd<span class="op">=</span><span class="dv">1600</span>),</span>
+<span id="cb7-360"><a></a>        }[model_type]</span>
+<span id="cb7-361"><a></a>        <span class="co"># we can override the dropout rate, if desired</span></span>
+<span id="cb7-362"><a></a>        <span class="cf">if</span> <span class="st">'dropout'</span> <span class="kw">in</span> override_args:</span>
+<span id="cb7-363"><a></a>            log.info(<span class="ss">f"overriding dropout rate to </span><span class="sc">{</span>override_args[<span class="st">'dropout'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-364"><a></a>            config_args[<span class="st">'dropout'</span>] <span class="op">=</span> override_args[<span class="st">'dropout'</span>]</span>
+<span id="cb7-365"><a></a>        <span class="co"># create a from-scratch initialized minGPT model</span></span>
+<span id="cb7-366"><a></a>        log.info(<span class="st">"forcing vocab_size=50257, block_size=1024, bias=True"</span>)</span>
+<span id="cb7-367"><a></a>        config <span class="op">=</span> GPTModelConfig(</span>
+<span id="cb7-368"><a></a>            <span class="op">**</span>config_args,</span>
+<span id="cb7-369"><a></a>            block_size<span class="op">=</span><span class="dv">1024</span>,   <span class="co"># always 1024 for GPT model checkpoints</span></span>
+<span id="cb7-370"><a></a>            vocab_size<span class="op">=</span><span class="dv">50257</span>,  <span class="co"># always 50257 for GPT model checkpoints</span></span>
+<span id="cb7-371"><a></a>            bias<span class="op">=</span><span class="va">True</span>,         <span class="co"># always True for GPT model checkpoints</span></span>
+<span id="cb7-372"><a></a>        )</span>
+<span id="cb7-373"><a></a>        model <span class="op">=</span> GPT(config)</span>
+<span id="cb7-374"><a></a>        sd <span class="op">=</span> model.state_dict()</span>
+<span id="cb7-375"><a></a>        sd_keys <span class="op">=</span> sd.keys()</span>
+<span id="cb7-376"><a></a>        sd_keys <span class="op">=</span> [</span>
+<span id="cb7-377"><a></a>            k <span class="cf">for</span> k <span class="kw">in</span> sd_keys <span class="cf">if</span> <span class="kw">not</span> k.endswith(<span class="st">'.attn.bias'</span>)</span>
+<span id="cb7-378"><a></a>        ]  <span class="co"># discard this mask / buffer, not a param</span></span>
+<span id="cb7-379"><a></a></span>
+<span id="cb7-380"><a></a>        <span class="co"># init a huggingface/transformers model</span></span>
+<span id="cb7-381"><a></a>        model_hf <span class="op">=</span> GPT2LMHeadModel.from_pretrained(model_type)</span>
+<span id="cb7-382"><a></a>        sd_hf <span class="op">=</span> model_hf.state_dict()</span>
+<span id="cb7-383"><a></a></span>
+<span id="cb7-384"><a></a>        <span class="co"># copy while ensuring all of the parameters are aligned and match in</span></span>
+<span id="cb7-385"><a></a>        <span class="co"># names and shapes</span></span>
+<span id="cb7-386"><a></a>        sd_keys_hf <span class="op">=</span> sd_hf.keys()</span>
+<span id="cb7-387"><a></a>        sd_keys_hf <span class="op">=</span> [</span>
+<span id="cb7-388"><a></a>            k <span class="cf">for</span> k <span class="kw">in</span> sd_keys_hf <span class="cf">if</span> <span class="kw">not</span> k.endswith(<span class="st">'.attn.masked_bias'</span>)</span>
+<span id="cb7-389"><a></a>        ]  <span class="co"># ignore these, just a buffer</span></span>
+<span id="cb7-390"><a></a>        sd_keys_hf <span class="op">=</span> [</span>
+<span id="cb7-391"><a></a>            k <span class="cf">for</span> k <span class="kw">in</span> sd_keys_hf <span class="cf">if</span> <span class="kw">not</span> k.endswith(<span class="st">'.attn.bias'</span>)</span>
+<span id="cb7-392"><a></a>        ]  <span class="co"># same, just the mask (buffer)</span></span>
+<span id="cb7-393"><a></a>        transposed <span class="op">=</span> [</span>
+<span id="cb7-394"><a></a>            <span class="st">'attn.c_attn.weight'</span>,</span>
+<span id="cb7-395"><a></a>            <span class="st">'attn.c_proj.weight'</span>,</span>
+<span id="cb7-396"><a></a>            <span class="st">'mlp.c_fc.weight'</span>,</span>
+<span id="cb7-397"><a></a>            <span class="st">'mlp.c_proj.weight'</span></span>
+<span id="cb7-398"><a></a>        ]</span>
+<span id="cb7-399"><a></a>        <span class="co"># basically the openai checkpoints use a "Conv1D" module, but we only</span></span>
+<span id="cb7-400"><a></a>        <span class="co"># want to use a vanilla Linear this means that we have to transpose</span></span>
+<span id="cb7-401"><a></a>        <span class="co"># these weights when we import them</span></span>
+<span id="cb7-402"><a></a>        <span class="cf">assert</span> <span class="bu">len</span>(sd_keys_hf) <span class="op">==</span> <span class="bu">len</span>(sd_keys), (</span>
+<span id="cb7-403"><a></a>            <span class="ss">f"mismatched keys: </span><span class="sc">{</span><span class="bu">len</span>(sd_keys_hf)<span class="sc">}</span><span class="ss"> != </span><span class="sc">{</span><span class="bu">len</span>(sd_keys)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb7-404"><a></a>        )</span>
+<span id="cb7-405"><a></a>        <span class="cf">for</span> k <span class="kw">in</span> sd_keys_hf:</span>
+<span id="cb7-406"><a></a>            <span class="cf">if</span> <span class="bu">any</span>(k.endswith(w) <span class="cf">for</span> w <span class="kw">in</span> transposed):</span>
+<span id="cb7-407"><a></a>                <span class="co"># special treatment for the Conv1D weights we need to transpose</span></span>
+<span id="cb7-408"><a></a>                <span class="cf">assert</span> sd_hf[k].shape[::<span class="op">-</span><span class="dv">1</span>] <span class="op">==</span> sd[k].shape</span>
+<span id="cb7-409"><a></a>                <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb7-410"><a></a>                    sd[k].copy_(sd_hf[k].t())</span>
+<span id="cb7-411"><a></a>            <span class="cf">else</span>:</span>
+<span id="cb7-412"><a></a>                <span class="co"># vanilla copy over the other parameters</span></span>
+<span id="cb7-413"><a></a>                <span class="cf">assert</span> sd_hf[k].shape <span class="op">==</span> sd[k].shape</span>
+<span id="cb7-414"><a></a>                <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb7-415"><a></a>                    sd[k].copy_(sd_hf[k])</span>
+<span id="cb7-416"><a></a></span>
+<span id="cb7-417"><a></a>        <span class="cf">return</span> model</span>
+<span id="cb7-418"><a></a></span>
+<span id="cb7-419"><a></a>    <span class="kw">def</span> configure_optimizers(</span>
+<span id="cb7-420"><a></a>            <span class="va">self</span>,</span>
+<span id="cb7-421"><a></a>            weight_decay,</span>
+<span id="cb7-422"><a></a>            learning_rate,</span>
+<span id="cb7-423"><a></a>            betas,</span>
+<span id="cb7-424"><a></a>            device_type</span>
+<span id="cb7-425"><a></a>    ):</span>
+<span id="cb7-426"><a></a>        <span class="co"># start with all of the candidate parameters</span></span>
+<span id="cb7-427"><a></a>        <span class="co"># filter out those that do not require grad</span></span>
+<span id="cb7-428"><a></a>        <span class="co"># param_dict = {</span></span>
+<span id="cb7-429"><a></a>        <span class="co">#     pn: p for pn, p in param_dict.items() if p.requires_grad</span></span>
+<span id="cb7-430"><a></a>        <span class="co"># }</span></span>
+<span id="cb7-431"><a></a>        param_dict <span class="op">=</span> {</span>
+<span id="cb7-432"><a></a>            pn: p <span class="cf">for</span> pn, p <span class="kw">in</span> <span class="va">self</span>.named_parameters() <span class="cf">if</span> p.requires_grad</span>
+<span id="cb7-433"><a></a>        }</span>
+<span id="cb7-434"><a></a>        <span class="co"># create optim groups. Any parameters that is 2D will be weight</span></span>
+<span id="cb7-435"><a></a>        <span class="co"># decayed, otherwise no. i.e. all weight tensors in matmuls +</span></span>
+<span id="cb7-436"><a></a>        <span class="co"># embeddings decay, all biases and layernorms don't.</span></span>
+<span id="cb7-437"><a></a>        decay_params <span class="op">=</span> [p <span class="cf">for</span> _, p <span class="kw">in</span> param_dict.items() <span class="cf">if</span> p.dim() <span class="op">&gt;=</span> <span class="dv">2</span>]</span>
+<span id="cb7-438"><a></a>        nodecay_params <span class="op">=</span> [p <span class="cf">for</span> _, p <span class="kw">in</span> param_dict.items() <span class="cf">if</span> p.dim() <span class="op">&lt;</span> <span class="dv">2</span>]</span>
+<span id="cb7-439"><a></a>        optim_groups <span class="op">=</span> [</span>
+<span id="cb7-440"><a></a>            {<span class="st">'params'</span>: decay_params, <span class="st">'weight_decay'</span>: weight_decay},</span>
+<span id="cb7-441"><a></a>            {<span class="st">'params'</span>: nodecay_params, <span class="st">'weight_decay'</span>: <span class="fl">0.0</span>}</span>
+<span id="cb7-442"><a></a>        ]</span>
+<span id="cb7-443"><a></a>        num_decay_params <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> decay_params)</span>
+<span id="cb7-444"><a></a>        num_nodecay_params <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> nodecay_params)</span>
+<span id="cb7-445"><a></a>        log.info(</span>
+<span id="cb7-446"><a></a>            <span class="ss">f"num decayed parameter tensors: </span><span class="sc">{</span><span class="bu">len</span>(decay_params)<span class="sc">}</span><span class="ss">, "</span></span>
+<span id="cb7-447"><a></a>            <span class="ss">f"with </span><span class="sc">{</span>num_decay_params<span class="sc">:,}</span><span class="ss"> parameters"</span></span>
+<span id="cb7-448"><a></a>        )</span>
+<span id="cb7-449"><a></a>        log.info(</span>
+<span id="cb7-450"><a></a>            <span class="ss">f"num non-decayed parameter tensors: </span><span class="sc">{</span><span class="bu">len</span>(nodecay_params)<span class="sc">}</span><span class="ss">, "</span></span>
+<span id="cb7-451"><a></a>            <span class="ss">f"with </span><span class="sc">{</span>num_nodecay_params<span class="sc">:,}</span><span class="ss"> parameters"</span></span>
+<span id="cb7-452"><a></a>        )</span>
+<span id="cb7-453"><a></a>        <span class="co"># Create AdamW optimizer and use the fused version if it is available</span></span>
+<span id="cb7-454"><a></a>        fused_available <span class="op">=</span> (</span>
+<span id="cb7-455"><a></a>            <span class="st">'fused'</span> <span class="kw">in</span> inspect.signature(torch.optim.AdamW).parameters</span>
+<span id="cb7-456"><a></a>        )</span>
+<span id="cb7-457"><a></a>        use_fused <span class="op">=</span> fused_available <span class="kw">and</span> device_type <span class="op">==</span> <span class="st">'cuda'</span></span>
+<span id="cb7-458"><a></a>        extra_args <span class="op">=</span> <span class="bu">dict</span>(fused<span class="op">=</span><span class="va">True</span>) <span class="cf">if</span> use_fused <span class="cf">else</span> {}</span>
+<span id="cb7-459"><a></a>        optimizer <span class="op">=</span> torch.optim.AdamW(</span>
+<span id="cb7-460"><a></a>            optim_groups,</span>
+<span id="cb7-461"><a></a>            lr<span class="op">=</span>learning_rate,</span>
+<span id="cb7-462"><a></a>            betas<span class="op">=</span>betas,</span>
+<span id="cb7-463"><a></a>            <span class="op">**</span>extra_args</span>
+<span id="cb7-464"><a></a>        )</span>
+<span id="cb7-465"><a></a>        log.info(<span class="ss">f"using fused AdamW: </span><span class="sc">{</span>use_fused<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-466"><a></a></span>
+<span id="cb7-467"><a></a>        <span class="cf">return</span> optimizer</span>
+<span id="cb7-468"><a></a></span>
+<span id="cb7-469"><a></a>    <span class="kw">def</span> estimate_mfu(<span class="va">self</span>, fwdbwd_per_iter, dt):</span>
+<span id="cb7-470"><a></a>        <span class="co">"""Estimate model flops utilization (MFU)</span></span>
+<span id="cb7-471"><a></a></span>
+<span id="cb7-472"><a></a><span class="co">        (in units of A100 bfloat16 peak FLOPS)</span></span>
+<span id="cb7-473"><a></a><span class="co">        """</span></span>
+<span id="cb7-474"><a></a>        <span class="co"># first estimate the number of flops we do per iteration.</span></span>
+<span id="cb7-475"><a></a>        <span class="co"># see PaLM paper Appendix B as ref: https://arxiv.org/abs/2204.02311</span></span>
+<span id="cb7-476"><a></a>        N <span class="op">=</span> <span class="va">self</span>.get_num_params()</span>
+<span id="cb7-477"><a></a>        cfg <span class="op">=</span> <span class="va">self</span>.config</span>
+<span id="cb7-478"><a></a>        L, H, Q, T <span class="op">=</span> (</span>
+<span id="cb7-479"><a></a>            cfg.n_layer,</span>
+<span id="cb7-480"><a></a>            cfg.n_head,</span>
+<span id="cb7-481"><a></a>            cfg.n_embd<span class="op">//</span>cfg.n_head,</span>
+<span id="cb7-482"><a></a>            cfg.block_size</span>
+<span id="cb7-483"><a></a>        )</span>
+<span id="cb7-484"><a></a>        flops_per_token <span class="op">=</span> <span class="dv">6</span><span class="op">*</span>N <span class="op">+</span> <span class="dv">12</span><span class="op">*</span>L<span class="op">*</span>H<span class="op">*</span>Q<span class="op">*</span>T</span>
+<span id="cb7-485"><a></a>        flops_per_fwdbwd <span class="op">=</span> flops_per_token <span class="op">*</span> T</span>
+<span id="cb7-486"><a></a>        flops_per_iter <span class="op">=</span> flops_per_fwdbwd <span class="op">*</span> fwdbwd_per_iter</span>
+<span id="cb7-487"><a></a>        <span class="co"># express our flops throughput as ratio of A100 bfloat16 peak flops</span></span>
+<span id="cb7-488"><a></a>        flops_achieved <span class="op">=</span> flops_per_iter <span class="op">*</span> (<span class="fl">1.0</span><span class="op">/</span>dt)  <span class="co"># per second</span></span>
+<span id="cb7-489"><a></a>        flops_promised <span class="op">=</span> <span class="fl">312e12</span>  <span class="co"># A100 GPU bfloat16 peak flops is 312 TFLOPS</span></span>
+<span id="cb7-490"><a></a>        <span class="cf">return</span> flops_achieved <span class="op">/</span> flops_promised</span>
+<span id="cb7-491"><a></a></span>
+<span id="cb7-492"><a></a>    <span class="at">@torch.no_grad</span>()</span>
+<span id="cb7-493"><a></a>    <span class="kw">def</span> generate(<span class="va">self</span>, idx, max_new_tokens, temperature<span class="op">=</span><span class="fl">1.0</span>, top_k<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb7-494"><a></a>        <span class="co">"""</span></span>
+<span id="cb7-495"><a></a><span class="co">        Take a conditioning sequence of indices idx (LongTensor of shape (b,t))</span></span>
+<span id="cb7-496"><a></a><span class="co">        and complete the sequence max_new_tokens times, feeding the predictions</span></span>
+<span id="cb7-497"><a></a><span class="co">        back into the model each time.</span></span>
+<span id="cb7-498"><a></a></span>
+<span id="cb7-499"><a></a><span class="co">        Most likely you'll want to make sure to be in model.eval() mode of</span></span>
+<span id="cb7-500"><a></a><span class="co">        operation for this.</span></span>
+<span id="cb7-501"><a></a><span class="co">        """</span></span>
+<span id="cb7-502"><a></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_new_tokens):</span>
+<span id="cb7-503"><a></a>            <span class="co"># if the sequence context is growing too long we must crop it at</span></span>
+<span id="cb7-504"><a></a>            <span class="co"># block_size</span></span>
+<span id="cb7-505"><a></a>            idx_cond <span class="op">=</span> (</span>
+<span id="cb7-506"><a></a>                idx <span class="cf">if</span> idx.size(<span class="dv">1</span>) <span class="op">&lt;=</span> <span class="va">self</span>.config.block_size</span>
+<span id="cb7-507"><a></a>                <span class="cf">else</span> idx[:, <span class="op">-</span><span class="va">self</span>.config.block_size:]</span>
+<span id="cb7-508"><a></a>            )</span>
+<span id="cb7-509"><a></a>            <span class="co"># forward the model to get the logits for the index in the sequence</span></span>
+<span id="cb7-510"><a></a>            logits, _ <span class="op">=</span> <span class="va">self</span>(idx_cond)</span>
+<span id="cb7-511"><a></a>            <span class="co"># pluck the logits at the final step and scale by desired</span></span>
+<span id="cb7-512"><a></a>            <span class="co"># temperature</span></span>
+<span id="cb7-513"><a></a>            logits <span class="op">=</span> logits[:, <span class="op">-</span><span class="dv">1</span>, :] <span class="op">/</span> temperature</span>
+<span id="cb7-514"><a></a>            <span class="co"># optionally crop the logits to only the top k options</span></span>
+<span id="cb7-515"><a></a>            <span class="cf">if</span> top_k <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-516"><a></a>                v, _ <span class="op">=</span> torch.topk(logits, <span class="bu">min</span>(top_k, logits.size(<span class="op">-</span><span class="dv">1</span>)))</span>
+<span id="cb7-517"><a></a>                logits[logits <span class="op">&lt;</span> v[:, [<span class="op">-</span><span class="dv">1</span>]]] <span class="op">=</span> <span class="op">-</span><span class="bu">float</span>(<span class="st">'Inf'</span>)</span>
+<span id="cb7-518"><a></a>            <span class="co"># apply softmax to convert logits to (normalized) probabilities</span></span>
+<span id="cb7-519"><a></a>            probs <span class="op">=</span> F.softmax(logits, dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb7-520"><a></a>            <span class="co"># sample from the distribution</span></span>
+<span id="cb7-521"><a></a>            idx_next <span class="op">=</span> torch.multinomial(probs, num_samples<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-522"><a></a>            <span class="co"># append sampled index to the running sequence and continue</span></span>
+<span id="cb7-523"><a></a>            idx <span class="op">=</span> torch.cat((idx, idx_next), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-524"><a></a></span>
+<span id="cb7-525"><a></a>        <span class="cf">return</span> idx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1359,19 +1823,196 @@ Figure&nbsp;20: <code>nanoGPT</code>, transformed.
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>get_batch</code></a></li><li><a href="#tabset-2-2"><code>_forward_step</code></a></li><li><a href="#tabset-2-3"><code>_backward_step</code></a></li><li><a href="#tabset-2-4"><code>train_step</code></a></li><li><a href="#tabset-2-5"><code>estimate_loss</code></a></li></ul>
 <div class="tab-content" style="font-size: 0.75em; width: 100%; height: 100%;">
 <div id="tabset-2-1">
-<div class="sourceCode" id="cb8" data-start-line="446" data-end-line="474"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8" data-startfrom="446"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 445;"><span id="cb8-446"><a></a>            engine, optimizer, <span class="op">*</span>_ <span class="op">=</span> deepspeed.initialize(</span>
+<span id="cb8-447"><a></a>                model<span class="op">=</span>model,</span>
+<span id="cb8-448"><a></a>                config<span class="op">=</span>ds_config,</span>
+<span id="cb8-449"><a></a>                model_parameters<span class="op">=</span>model.parameters()</span>
+<span id="cb8-450"><a></a>            )</span>
+<span id="cb8-451"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-452"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'Unable to initialize DeepSpeed'</span>)</span>
+<span id="cb8-453"><a></a>        <span class="cf">assert</span> engine <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> optimizer <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-454"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb8-455"><a></a>            <span class="st">'model_engine'</span>: engine,</span>
+<span id="cb8-456"><a></a>            <span class="st">'optimizer'</span>: optimizer,</span>
+<span id="cb8-457"><a></a>            <span class="st">'ds_config'</span>: ds_config,</span>
+<span id="cb8-458"><a></a>        }</span>
+<span id="cb8-459"><a></a></span>
+<span id="cb8-460"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
+<span id="cb8-461"><a></a>        <span class="co"># data = self.config.train_data if split == 'train'</span></span>
+<span id="cb8-462"><a></a>        <span class="co"># else self.config.val_data</span></span>
+<span id="cb8-463"><a></a>        data <span class="op">=</span> <span class="va">self</span>.config.data.data.get(split, <span class="va">None</span>)</span>
+<span id="cb8-464"><a></a>        <span class="cf">assert</span> data <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-465"><a></a>        ix <span class="op">=</span> torch.randint(</span>
+<span id="cb8-466"><a></a>            <span class="bu">len</span>(data) <span class="op">-</span> <span class="va">self</span>.config.model.block_size,</span>
+<span id="cb8-467"><a></a>            (<span class="va">self</span>.config.model.batch_size,)</span>
+<span id="cb8-468"><a></a>        )</span>
+<span id="cb8-469"><a></a>        block_size <span class="op">=</span> <span class="va">self</span>.config.model.block_size</span>
+<span id="cb8-470"><a></a>        x <span class="op">=</span> torch.stack(</span>
+<span id="cb8-471"><a></a>            [</span>
+<span id="cb8-472"><a></a>                torch.from_numpy((data[i:i<span class="op">+</span>block_size]).astype(np.int64))</span>
+<span id="cb8-473"><a></a>                <span class="cf">for</span> i <span class="kw">in</span> ix</span>
+<span id="cb8-474"><a></a>            ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-2">
-<div class="sourceCode" id="cb9" data-start-line="534" data-end-line="542"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9" data-startfrom="534"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 533;"><span id="cb9-534"><a></a>            n_embd<span class="op">=</span>ckpt_model[<span class="st">'n_embd'</span>],</span>
+<span id="cb9-535"><a></a>            block_size<span class="op">=</span>ckpt_model[<span class="st">'block_size'</span>],</span>
+<span id="cb9-536"><a></a>            bias<span class="op">=</span>ckpt_model[<span class="st">'bias'</span>],</span>
+<span id="cb9-537"><a></a>            vocab_size<span class="op">=</span>ckpt_model[<span class="st">'vocab_size'</span>],</span>
+<span id="cb9-538"><a></a>        )</span>
+<span id="cb9-539"><a></a>        model <span class="op">=</span> GPT(model_config)</span>
+<span id="cb9-540"><a></a>        state_dict <span class="op">=</span> checkpoint[<span class="st">'model'</span>]</span>
+<span id="cb9-541"><a></a>        unwanted_prefix <span class="op">=</span> <span class="st">'_orig_mod.'</span></span>
+<span id="cb9-542"><a></a>        <span class="cf">for</span> k, _ <span class="kw">in</span> <span class="bu">list</span>(state_dict.items()):</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-3">
-<div class="sourceCode" id="cb10" data-start-line="544" data-end-line="569"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10" data-startfrom="544"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 543;"><span id="cb10-544"><a></a>                state_dict[k[<span class="bu">len</span>(unwanted_prefix):]] <span class="op">=</span> state_dict.pop(k)</span>
+<span id="cb10-545"><a></a>        model.load_state_dict(state_dict)</span>
+<span id="cb10-546"><a></a>        <span class="cf">return</span> model, checkpoint</span>
+<span id="cb10-547"><a></a></span>
+<span id="cb10-548"><a></a>    <span class="kw">def</span> _forward_step(<span class="va">self</span>, x: torch.Tensor, y: torch.Tensor) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb10-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb10-550"><a></a>        <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
+<span id="cb10-551"><a></a>            logits, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
+<span id="cb10-552"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb10-553"><a></a>            <span class="st">'logits'</span>: logits,</span>
+<span id="cb10-554"><a></a>            <span class="st">'loss'</span>: loss,</span>
+<span id="cb10-555"><a></a>            <span class="st">'dt'</span>: time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb10-556"><a></a>        }</span>
+<span id="cb10-557"><a></a></span>
+<span id="cb10-558"><a></a>    <span class="kw">def</span> _backward_step(</span>
+<span id="cb10-559"><a></a>            <span class="va">self</span>,</span>
+<span id="cb10-560"><a></a>            loss: torch.Tensor,</span>
+<span id="cb10-561"><a></a>            propagate_grads: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb10-562"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb10-563"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb10-564"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="kw">in</span> [<span class="st">'ds'</span>, <span class="st">'deepspeed'</span>]:</span>
+<span id="cb10-565"><a></a>            <span class="va">self</span>.model_engine.backward(loss)  <span class="co"># type:ignore</span></span>
+<span id="cb10-566"><a></a>            <span class="va">self</span>.model_engine.step(loss)      <span class="co"># type:ignore</span></span>
+<span id="cb10-567"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb10-568"><a></a>            <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-569"><a></a>                <span class="va">self</span>.grad_scaler.scale(loss).backward()  <span class="co"># type:ignore</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-4">
-<div class="sourceCode" id="cb11" data-start-line="571" data-end-line="674"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11" data-startfrom="571"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 570;"><span id="cb11-571"><a></a>                <span class="cf">if</span> <span class="va">self</span>.config.optimizer.grad_clip <span class="op">!=</span> <span class="fl">0.0</span>:</span>
+<span id="cb11-572"><a></a>                    <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb11-573"><a></a>                        <span class="va">self</span>.grad_scaler.unscale_(<span class="va">self</span>.optimizer)</span>
+<span id="cb11-574"><a></a>                    torch.nn.utils.clip_grad_norm_(  <span class="co"># pyright: ignore</span></span>
+<span id="cb11-575"><a></a>                        <span class="va">self</span>.model_engine.parameters(),</span>
+<span id="cb11-576"><a></a>                        <span class="va">self</span>.config.optimizer.grad_clip</span>
+<span id="cb11-577"><a></a>                    )</span>
+<span id="cb11-578"><a></a>                <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb11-579"><a></a>                    <span class="va">self</span>.grad_scaler.step(<span class="va">self</span>.optimizer)</span>
+<span id="cb11-580"><a></a>                    <span class="va">self</span>.grad_scaler.update()</span>
+<span id="cb11-581"><a></a>                    <span class="va">self</span>.optimizer.zero_grad(set_to_none<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-582"><a></a></span>
+<span id="cb11-583"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb11-584"><a></a></span>
+<span id="cb11-585"><a></a>    <span class="kw">def</span> train_step(</span>
+<span id="cb11-586"><a></a>            <span class="va">self</span>,</span>
+<span id="cb11-587"><a></a>            x: torch.Tensor,</span>
+<span id="cb11-588"><a></a>            y: torch.Tensor,</span>
+<span id="cb11-589"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb11-590"><a></a>        lr <span class="op">=</span> (</span>
+<span id="cb11-591"><a></a>            <span class="va">self</span>.get_lr(<span class="va">self</span>.config.iter_num)</span>
+<span id="cb11-592"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.optimizer.decay_lr</span>
+<span id="cb11-593"><a></a>            <span class="cf">else</span> <span class="va">self</span>._lr</span>
+<span id="cb11-594"><a></a>        )</span>
+<span id="cb11-595"><a></a>        <span class="cf">for</span> param_group <span class="kw">in</span> <span class="va">self</span>.optimizer.param_groups:</span>
+<span id="cb11-596"><a></a>            param_group[<span class="st">'lr'</span>] <span class="op">=</span> lr</span>
+<span id="cb11-597"><a></a>        dtf <span class="op">=</span> []</span>
+<span id="cb11-598"><a></a>        dtb <span class="op">=</span> []</span>
+<span id="cb11-599"><a></a>        dt <span class="op">=</span> []</span>
+<span id="cb11-600"><a></a>        loss <span class="op">=</span> torch.tensor(<span class="fl">0.0</span>)</span>
+<span id="cb11-601"><a></a>        <span class="cf">for</span> micro_step <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>._gas):</span>
+<span id="cb11-602"><a></a>            is_last_micro_step <span class="op">=</span> (micro_step <span class="op">==</span> <span class="va">self</span>._gas <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb11-603"><a></a>            <span class="co"># </span><span class="al">NOTE</span><span class="co">: -----------------------------------------------------------</span></span>
+<span id="cb11-604"><a></a>            <span class="co"># In DDP training we only need to sync gradients at the last micro</span></span>
+<span id="cb11-605"><a></a>            <span class="co"># step. the official way to do this is with model.no_sync() context</span></span>
+<span id="cb11-606"><a></a>            <span class="co"># manager, but I really dislike that this bloats the code and</span></span>
+<span id="cb11-607"><a></a>            <span class="co"># forces us to repeat code looking at the source of that context</span></span>
+<span id="cb11-608"><a></a>            <span class="co"># manager, it just toggles this variable</span></span>
+<span id="cb11-609"><a></a>            <span class="co"># -----------------------------------------------------------------</span></span>
+<span id="cb11-610"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="op">==</span> <span class="st">'ddp'</span>:</span>
+<span id="cb11-611"><a></a>                _ <span class="op">=</span> (</span>
+<span id="cb11-612"><a></a>                    <span class="va">self</span>.model_engine.require_backward_grad_sync</span>
+<span id="cb11-613"><a></a>                    <span class="cf">if</span> (is_last_micro_step <span class="kw">and</span> <span class="va">self</span>.world_size <span class="op">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb11-614"><a></a>                    <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb11-615"><a></a>                )</span>
+<span id="cb11-616"><a></a>            fout <span class="op">=</span> <span class="va">self</span>._forward_step(x, y)</span>
+<span id="cb11-617"><a></a>            <span class="co"># immediately async prefetch next batch while model is doing the</span></span>
+<span id="cb11-618"><a></a>            <span class="co"># forward pass on the GPU</span></span>
+<span id="cb11-619"><a></a>            x, y <span class="op">=</span> <span class="va">self</span>.get_batch(<span class="st">'train'</span>)</span>
+<span id="cb11-620"><a></a>            loss <span class="op">=</span> fout[<span class="st">'loss'</span>] <span class="op">/</span> <span class="va">self</span>._gas</span>
+<span id="cb11-621"><a></a>            dtf.append(fout[<span class="st">'dt'</span>])</span>
+<span id="cb11-622"><a></a>            dtb_ <span class="op">=</span> <span class="va">self</span>._backward_step(</span>
+<span id="cb11-623"><a></a>                loss,</span>
+<span id="cb11-624"><a></a>                propagate_grads<span class="op">=</span>is_last_micro_step</span>
+<span id="cb11-625"><a></a>            )</span>
+<span id="cb11-626"><a></a>            dtb.append(dtb_)</span>
+<span id="cb11-627"><a></a>            dt.append(dtf <span class="op">+</span> dtb)</span>
+<span id="cb11-628"><a></a>        timers <span class="op">=</span> {</span>
+<span id="cb11-629"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb11-630"><a></a>            <span class="st">'dt'</span>: np.array(dt),</span>
+<span id="cb11-631"><a></a>            <span class="st">'dt_tot'</span>: np.<span class="bu">sum</span>(dt),</span>
+<span id="cb11-632"><a></a>            <span class="st">'dt_avg'</span>: np.mean(dt),</span>
+<span id="cb11-633"><a></a>            <span class="st">'dtf'</span>: np.array(dtf),</span>
+<span id="cb11-634"><a></a>            <span class="st">'dtf_tot'</span>: np.<span class="bu">sum</span>(dtf),</span>
+<span id="cb11-635"><a></a>            <span class="st">'dtf_avg'</span>: np.mean(dtf),</span>
+<span id="cb11-636"><a></a>            <span class="st">'dtb'</span>: np.array(dtb),</span>
+<span id="cb11-637"><a></a>            <span class="st">'dtb_tot'</span>: np.<span class="bu">sum</span>(dtb),</span>
+<span id="cb11-638"><a></a>            <span class="st">'dtb_avg'</span>: np.mean(dtb)</span>
+<span id="cb11-639"><a></a>        }</span>
+<span id="cb11-640"><a></a>        metrics <span class="op">=</span> {</span>
+<span id="cb11-641"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb11-642"><a></a>            <span class="st">'loss'</span>: loss,</span>
+<span id="cb11-643"><a></a>            <span class="st">'lr'</span>: lr,</span>
+<span id="cb11-644"><a></a>        }</span>
+<span id="cb11-645"><a></a>        <span class="va">self</span>.config.iter_num <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-646"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb11-647"><a></a>            <span class="st">'metrics'</span>: metrics,</span>
+<span id="cb11-648"><a></a>            <span class="st">'timers'</span>: timers,</span>
+<span id="cb11-649"><a></a>            <span class="st">'x'</span>: x,</span>
+<span id="cb11-650"><a></a>            <span class="st">'y'</span>: y,</span>
+<span id="cb11-651"><a></a>        }</span>
+<span id="cb11-652"><a></a></span>
+<span id="cb11-653"><a></a>    <span class="kw">def</span> save_ckpt(</span>
+<span id="cb11-654"><a></a>            <span class="va">self</span>,</span>
+<span id="cb11-655"><a></a>            raw_model: Optional[torch.nn.Module <span class="op">|</span> GPT] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb11-656"><a></a>            add_to_wandb: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb11-657"><a></a>    ):</span>
+<span id="cb11-658"><a></a>        <span class="cf">if</span> raw_model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb11-659"><a></a>            model <span class="op">=</span> raw_model  <span class="co"># type:ignore</span></span>
+<span id="cb11-660"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb11-661"><a></a>            model <span class="op">=</span> <span class="va">self</span>.model</span>
+<span id="cb11-662"><a></a>        <span class="cf">assert</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb11-663"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
+<span id="cb11-664"><a></a>        <span class="co"># assert issubclass(GPT,  torch.nn.Module)</span></span>
+<span id="cb11-665"><a></a>        ckpt <span class="op">=</span> {</span>
+<span id="cb11-666"><a></a>            <span class="st">'model'</span>: model.state_dict(),</span>
+<span id="cb11-667"><a></a>            <span class="st">'optimizer'</span>: <span class="va">self</span>.optimizer.state_dict(),</span>
+<span id="cb11-668"><a></a>            <span class="st">'model_args'</span>: asdict(<span class="va">self</span>.config.model),</span>
+<span id="cb11-669"><a></a>            <span class="st">'iter_num'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb11-670"><a></a>            <span class="st">'best_val_loss'</span>: <span class="va">self</span>.config.best_val_loss,</span>
+<span id="cb11-671"><a></a>            <span class="st">'config'</span>: asdict(<span class="va">self</span>.config),</span>
+<span id="cb11-672"><a></a>        }</span>
+<span id="cb11-673"><a></a>        <span class="co"># assert (</span></span>
+<span id="cb11-674"><a></a>        <span class="co">#     isinstance(model, GPT)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-2-5">
-<div class="sourceCode" id="cb12" data-start-line="487" data-end-line="500"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-startfrom="487"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 486;"><span id="cb12-487"><a></a>            y <span class="op">=</span> y.to(<span class="va">self</span>.config.device_type)</span>
+<span id="cb12-488"><a></a>        <span class="cf">return</span> x, y</span>
+<span id="cb12-489"><a></a></span>
+<span id="cb12-490"><a></a>    <span class="kw">def</span> get_lr(<span class="va">self</span>, it: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb12-491"><a></a>        <span class="cf">if</span> it <span class="op">&lt;</span> <span class="va">self</span>._witers:</span>
+<span id="cb12-492"><a></a>            <span class="cf">return</span> <span class="va">self</span>._lr <span class="op">*</span> it <span class="op">/</span> <span class="va">self</span>._witers</span>
+<span id="cb12-493"><a></a>        <span class="cf">if</span> it <span class="op">&gt;</span> <span class="va">self</span>._diters:</span>
+<span id="cb12-494"><a></a>            <span class="cf">return</span> <span class="va">self</span>._min_lr</span>
+<span id="cb12-495"><a></a>        decay_ratio <span class="op">=</span> (it <span class="op">-</span> <span class="va">self</span>._witers) <span class="op">/</span> (<span class="va">self</span>._diters <span class="op">-</span> <span class="va">self</span>._witers)</span>
+<span id="cb12-496"><a></a>        <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> decay_ratio <span class="op">&lt;=</span> <span class="dv">1</span></span>
+<span id="cb12-497"><a></a>        coeff <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">+</span> math.cos(math.pi <span class="op">*</span> decay_ratio))</span>
+<span id="cb12-498"><a></a>        <span class="cf">return</span> <span class="va">self</span>._min_lr <span class="op">+</span> coeff <span class="op">*</span> (<span class="va">self</span>._lr <span class="op">-</span> <span class="va">self</span>._min_lr)</span>
+<span id="cb12-499"><a></a></span>
+<span id="cb12-500"><a></a>    <span class="at">@torch.no_grad</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
