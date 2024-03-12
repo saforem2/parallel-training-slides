@@ -86,7 +86,7 @@ format:
 
 ::: {.col1}
 
-[[**AI for Science Training Series**](https://github.com/argonne-lcf/llm-workshop)**]{.dim-text}  
+[[**AI for Science Training Series**](https://github.com/argonne-lcf/llm-workshop)]{.dim-text}  
 [Argonne National Laboratory]{.dim-text}  
 <br>
 
