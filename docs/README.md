@@ -1158,7 +1158,10 @@ style="font-size: 0.75em; width: 100%; height: 100%;">
 
 ## References
 
-1.  [NVIDIA / NCCL / Collective
+1.  [DeepSpeed: Extreme-scale model training for everyone - Microsoft
+    Research](https://www.microsoft.com/en-us/research/blog/deepspeed-extreme-scale-model-training-for-everyone/)
+
+2.  [NVIDIA / NCCL / Collective
     Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html)
 
 <div id="refs" class="references csl-bib-body hanging-indent"

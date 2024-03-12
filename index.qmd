@@ -115,9 +115,10 @@ format:
 ::: {.col2 style="font-size: 0.6em; text-align: center;"}
 
 ::: {#fig-3d-parallel style="text-align: center;"}
-[![](https://cdn-lfs.huggingface.co/datasets/huggingface/documentation-images/315020969c2ee0750b0d3b3815ee7e4ab321c4723f81de977ab6320f28715485?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27parallelism-deepspeed-3d.png%3B+filename%3D%22parallelism-deepspeed-3d.png%22%3B&response-content-type=image%2Fpng&Expires=1710014172&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTcxMDAxNDE3Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9odWdnaW5nZmFjZS9kb2N1bWVudGF0aW9uLWltYWdlcy8zMTUwMjA5NjljMmVlMDc1MGIwZDNiMzgxNWVlN2U0YWIzMjFjNDcyM2Y4MWRlOTc3YWI2MzIwZjI4NzE1NDg1P3Jlc3BvbnNlLWNvbnRlbnQtZGlzcG9zaXRpb249KiZyZXNwb25zZS1jb250ZW50LXR5cGU9KiJ9XX0_&Signature=LfXYJ8on2VB643vlUqFHhKR4E0gp1D8lk8kZXZuNBJGToBcCOOdsSAHrl5DLTO6g0PkYzGOoRfN2bDlHQ7rxBEo%7E%7EQ8VJutDH3BP6ShhZ2nSva4MFtdMefLfwMRzjFZCEB3t4H4Q0-Hb5Z6Dxv4KvkUNhEk1ee6xW3Wcfz5Xo9TJ-wC-J7oVm%7ErPQdlphL8FMBI67W1HfgZQCTGu6iIdK6Hv0XOXB4T%7E89PuVVn0Wlf6A7QqaMVcll51DzdA-IoG%7E2Q5I-5tjyVH%7EhX3zsIbw7%7EZbxsftgajEbJQcHUrqF2ZIRq9HA7wlD3GQDyhG8gXNNVOPqrWLj4sTPs9IuBm%7EQ__&Key-Pair-Id=KVTP0A1DKRTAX)]{.stretch}
 
-[Image from [🤗 Transformers / Efficient Training on Multiple GPUs](https://huggingface.co/docs/transformers/en/perf_train_gpu_many)]{.dim-text}
+![](https://www.microsoft.com/en-us/research/uploads/prod/2020/09/Blog_DeepSpeed3_Figure2_highres.png)
+
+[[Source](https://www.microsoft.com/en-us/research/blog/deepspeed-extreme-scale-model-training-for-everyone/)]{.dim-text}
 :::
 
 :::
@@ -883,6 +884,8 @@ which is a DOE Office of Science User Facility supported under Contract DE-AC02-
 :::
 
 ## References
+
+1. [DeepSpeed: Extreme-scale model training for everyone - Microsoft Research](https://www.microsoft.com/en-us/research/blog/deepspeed-extreme-scale-model-training-for-everyone/)
 
 1. [NVIDIA / NCCL / Collective Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html)
 
