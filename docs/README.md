@@ -16,7 +16,7 @@ Sam Foreman
 <div class="dim-text" style="font-size: 0.55em;">
 
 \[…\] since 2012, the amount of \[AI\] compute used has been increasing
-exponentially with a \> 34-month doubling time[^1], or \[**300,000**x\].
+exponentially with a 3.4-month doubling time[^1], or \[**300,000**x\].
 [Source.](https://openai.com/research/ai-and-compute)
 
 </div>
