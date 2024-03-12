@@ -1,7 +1,7 @@
 # Parallel Training Techniques
 Sam Foreman
 [<span class="orcid-green"></span>](https://orcid.org/0000-0002-9981-0876)
-2024-03-09
+2024-03-12
 
 # Parallel Training Techniques
 
@@ -17,6 +17,7 @@ Sam Foreman
 
 \[…\] since 2012, the amount of \[AI\] compute used has been increasing
 exponentially with a \> 34-month doubling time[^1], or \[**300,000**x\].
+[Source.](https://openai.com/research/ai-and-compute)
 
 </div>
 
@@ -185,7 +186,7 @@ style="width:50.0%" />
 
   > [!IMPORTANT]
   >
-  > ### Keeping things in Sync 🤝
+  > ### 🤝 Keeping things in Sync
   >
   > **Computation stalls during communication !!**
   >
@@ -221,6 +222,34 @@ style="width:50.0%" />
 <div>
 
 </div>
+
+# Model Parallel Training: Example
+
+$$y = \sum_{i} w_{i} * x_{i} = w_0 * x_0 + w_1 * x_1 + w_2 * x_2$$
+
+1.  Compute $y_{0} = w_{0} * x_{0}$ and send to $\longrightarrow$ `GPU1`
+2.  Compute $y_{1} = y_{0} + w_{1} * x_{1}$ and send to
+    $\longrightarrow$ `GPU2`
+3.  Compute $y = y_{1} * w_{2} * x_{2}$ ✅
+
+``` mermaid
+flowchart LR
+  subgraph X0["GPU0"]
+    direction LR
+    a["w0"]
+  end
+  subgraph X1["GPU1"]
+    direction LR
+    b["w1"]
+  end
+  subgraph X2["GPU2"]
+    direction LR
+    c["w2"]
+  end
+  X1 & X0 <--> X2
+  X0 <--> X1
+  x["x0, x1, x2"] --> X0
+```
 
 # Hands-On
 

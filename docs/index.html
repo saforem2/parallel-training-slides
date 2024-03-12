@@ -20,7 +20,7 @@
   <meta name="generator" content="quarto-1.4.549">
 
   <meta name="author" content="Sam Foreman ">
-  <meta name="dcterms.date" content="2024-03-09">
+  <meta name="dcterms.date" content="2024-03-12">
   <title>LLMs from Scratch - Parallel Training Techniques</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -457,10 +457,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="citation_title" content="Parallel Training Techniques">
 <meta name="citation_author" content="Sam Foreman">
-<meta name="citation_publication_date" content="2024-03-09">
-<meta name="citation_cover_date" content="2024-03-09">
+<meta name="citation_publication_date" content="2024-03-12">
+<meta name="citation_cover_date" content="2024-03-12">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-03-09">
+<meta name="citation_online_date" content="2024-03-12">
 <meta name="citation_fulltext_html_url" content="https://saforem2.github.io/parallel-training-slides">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Progress on (g-2)_\mu from lattice QCD;,citation_author=Hartmut Wittig;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2306.04165;">
@@ -500,11 +500,11 @@
     </div>
 </div>
 
-  <p class="date">2024-03-09</p>
+  <p class="date">2024-03-12</p>
 </section>
 <section id="parallel-training-techniques" class="title-slide slide level1 center">
 <h1>Parallel Training Techniques</h1>
-<div class="quarto-layout-panel" data-layout="[60,-5, 35]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,-5, 35]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <p><span class="dim-text"><a href="https://github.com/argonne-lcf/llm-workshop"><strong>AI for Science Training Series</strong></a>**</span><br>
@@ -555,7 +555,7 @@ Figure&nbsp;1: <span class="dim-text">Image from <a href="https://huggingface.co
 <h1>AI 🤝 Compute</h1>
 <p><img data-src="./assets/ai-and-compute-all.png" style="width:70.0%"></p>
 <div class="dim-text" style="font-size: 0.55em;">
-<p>[…] since 2012, the amount of [AI] compute used has been increasing exponentially with a &gt; 34-month doubling time<sup>1</sup>, or [<strong>300,000</strong>x].</p>
+<p>[…] since 2012, the amount of [AI] compute used has been increasing exponentially with a &gt; 34-month doubling time<sup>1</sup>, or [<strong>300,000</strong>x]. <a href="https://openai.com/research/ai-and-compute">Source.</a></p>
 </div>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>By comparison, Moore’s Law had a 2-year doubling period, and would have doubled 7x since 2012</p></li></ol></aside></section>
 
@@ -563,7 +563,7 @@ Figure&nbsp;1: <span class="dim-text">Image from <a href="https://huggingface.co
 <h1>AI 🤝 Compute [Modern Era]</h1>
 
 <img data-src="./assets/ai-and-compute-modern-log.png" style="width:90.0%" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;2: [<strong>300,000</strong>x since 2012] vs [7x for Moore’s Law]
+Figure&nbsp;2: [<strong>300,000</strong>x since 2012] vs [7x for Moore’s Law]. <a href="https://openai.com/research/ai-and-compute">Source.</a>
 </p></section>
 
 <section id="single-gpu-training" class="title-slide slide level1 centeredslide center">
@@ -793,7 +793,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-3" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -820,7 +820,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-4" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -892,11 +892,11 @@ Figure&nbsp;11
 <li>Most practical in big <em>at-scale</em> training</li>
 </ul></li>
 </ul>
-<div title="Keeping things in Sync 🤝">
+<div title="🤝 Keeping things in Sync">
 <div class="callout callout-important no-icon callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Keeping things in Sync 🤝</strong></p>
+<p><strong>🤝 Keeping things in Sync</strong></p>
 </div>
 <div class="callout-content">
 <p><strong>Computation stalls during communication !!</strong></p>
@@ -949,7 +949,7 @@ Figure&nbsp;11
 
 <section id="model-parallel-training" class="title-slide slide level1 center">
 <h1>Model Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -976,6 +976,43 @@ Figure&nbsp;12
 </figcaption>
 </figure>
 </div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="model-parallel-training-example" class="title-slide slide level1 center">
+<h1>Model Parallel Training: Example</h1>
+<p><span class="math display">y = \sum_{i} w_{i} * x_{i} = w_0 * x_0 + w_1 * x_1 + w_2 * x_2</span></p>
+<ol type="1">
+<li>Compute <span class="math inline">y_{0} = w_{0} * x_{0}</span> and send to <span class="math inline">\longrightarrow</span> <code>GPU1</code></li>
+<li>Compute <span class="math inline">y_{1} = y_{0} + w_{1} * x_{1}</span> and send to <span class="math inline">\longrightarrow</span> <code>GPU2</code></li>
+<li>Compute <span class="math inline">y = y_{1} * w_{2} * x_{2}</span> ✅</li>
+</ol>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  subgraph X0["GPU0"]
+    direction LR
+    a["w0"]
+  end
+  subgraph X1["GPU1"]
+    direction LR
+    b["w1"]
+  end
+  subgraph X2["GPU2"]
+    direction LR
+    c["w2"]
+  end
+  X1 &amp; X0 &lt;--&gt; X2
+  X0 &lt;--&gt; X1
+  x["x0, x1, x2"] --&gt; X0
+</pre>
+</div>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
@@ -1089,7 +1126,7 @@ Figure&nbsp;12
 <section>
 <section id="data-parallel-training-6" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
+<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
