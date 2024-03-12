@@ -432,6 +432,7 @@ Reduce operation: one rank receives the reduction of input values across ranks
 
 ::: {#fig-model-parallel-1}
 
+<!-- ![](./assets/model-parallelism.svg) -->
 ![](https://saforem2.github.io/distributed-training-slides/assets/model-parallel.svg)
 
 :::

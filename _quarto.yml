@@ -48,7 +48,7 @@ website:
   favicon: "./favicon.svg"
   description: "Parallel Training Techniques"
   page-navigation: true
-  title: "LLMs from Scratch"
+  title: "Parallel Training Techniques"
   site-url: "https://saforem2.github.io/parallel-training-slides"
   # favicon: "./favicon.svg"
   back-to-top-navigation: true
