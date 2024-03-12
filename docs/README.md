@@ -176,6 +176,22 @@ style="width:50.0%" />
   > When randomly selecting, it is important that each worker uses
   > different seeds to ensure they receive unique data
 
+# Broadcast Initial State
+
+- At the start of training (or when loading from a checkpoint), we want
+  all of our workers to be initialized consistently
+  - **Broadcast** the model and optimizer states from `rank() == 0`
+    worker
+
+``` mermaid
+  flowchart TD
+    0["GPU0"] --> 1["GPU 1"]
+    0 --> 2["GPU 2"]
+    0 -->|Model + Optimizer State| 3["GPU 3"]
+    0 --> ...
+    0 --> N["GPU N"]
+```
+
 # Best Practices
 
 - Use parallel IO whenever possible
@@ -200,22 +216,6 @@ style="width:50.0%" />
   - Offloading to a GPU frees CPU cycles for loading the next batch of
     data
     - **minimize IO latency this way**
-
-# Broadcast Initial State
-
-- At the start of training (or when loading from a checkpoint), we want
-  all of our workers to be initialized consistently
-  - **Broadcast** the model and optimizer states from `rank() == 0`
-    worker
-
-``` mermaid
-  flowchart TD
-    0["GPU0"] --> 1["GPU 1"]
-    0 --> 2["GPU 2"]
-    0 -->|Model + Optimizer State| 3["GPU 3"]
-    0 --> ...
-    0 --> N["GPU N"]
-```
 
 # Model Parallel Training
 

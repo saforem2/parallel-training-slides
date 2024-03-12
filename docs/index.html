@@ -880,6 +880,33 @@ Figure&nbsp;11
 </ul>
 </section>
 
+<section id="broadcast-initial-state" class="title-slide slide level1 center">
+<h1>Broadcast Initial State</h1>
+<ul>
+<li>At the start of training (or when loading from a checkpoint), we want all of our workers to be initialized consistently
+<ul>
+<li><strong>Broadcast</strong> the model and optimizer states from <code>rank() == 0</code> worker</li>
+</ul></li>
+</ul>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">  flowchart TD
+    0["GPU0"] --&gt; 1["GPU 1"]
+    0 --&gt; 2["GPU 2"]
+    0 --&gt;|Model + Optimizer State| 3["GPU 3"]
+    0 --&gt; ...
+    0 --&gt; N["GPU N"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+
 <section id="best-practices" class="title-slide slide level1 smaller center">
 <h1>Best Practices</h1>
 <ul>
@@ -918,33 +945,6 @@ Figure&nbsp;11
 </ul></li>
 </ul></li>
 </ul>
-</section>
-
-<section id="broadcast-initial-state" class="title-slide slide level1 center">
-<h1>Broadcast Initial State</h1>
-<ul>
-<li>At the start of training (or when loading from a checkpoint), we want all of our workers to be initialized consistently
-<ul>
-<li><strong>Broadcast</strong> the model and optimizer states from <code>rank() == 0</code> worker</li>
-</ul></li>
-</ul>
-<div class="cell" data-reveal="true" data-layout-align="center">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">  flowchart TD
-    0["GPU0"] --&gt; 1["GPU 1"]
-    0 --&gt; 2["GPU 2"]
-    0 --&gt;|Model + Optimizer State| 3["GPU 3"]
-    0 --&gt; ...
-    0 --&gt; N["GPU N"]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
 </section>
 
 <section id="model-parallel-training" class="title-slide slide level1 center">
