@@ -99,25 +99,20 @@ format:
 
 ::: {style="font-size: 0.7em;"}
 
-<!-- [{{< iconify line-md home-md-twotone-alt >}}`argonne-lcf/`](https://github.com/argonne-lcf/) -->
-
 <details open><summary><a href="https://github.com/argonne-lcf/"><code>argonne-lcf</code>:</a></summary>
 
 - [{{< iconify line-md github-loop >}}`ai-science-training-series/`](https://github.com/argonne-lcf/ai-science-training-series)
-  - [{{< iconify line-md document >}}`06_parallel_training_methods/`](https://github.com/argonne-lcf/ai-science-training-series/blob/main/06_parallel_training_methods/README.md)
+  - [{{< iconify line-md document >}}`06_parallel_training_methods/`](https://github.com/argonne-lcf/ai-science-training-series/tree/main/06_parallel_training)
 
-</details>  
+
+</details>
 
 <br>
 
-<!-- - [{{< iconify line-md person >}}`saforem2/`](https://github.com/saforem2) -->
-
 <details open><summary> <a href="https://github.com/saforem2/"> <code>saforem2</code> </a> </summary>
+
 - [{{< iconify line-md github-loop >}}`parallel-training-slides`](https://github.com/saforem2/parallel-training-slides)
   - [{{< iconify line-md image-twotone >}}\[**slides**\]](https://saforem2.github.io/parallel-training-slides/) [{{< iconify line-md github-twotone >}}\[**GitHub**\]](https://github.com/saforem2/parallel-training-slides/)
-  <!-- - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk) -->
-  <!-- - [{{< iconify line-md github-loop >}} `llm-workshop-talk`] -->
-    <!-- - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk)  -->
 
 </details>
 
