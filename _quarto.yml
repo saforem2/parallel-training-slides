@@ -45,6 +45,15 @@ citation:
 #       - ./docs/python.xml
 #
 website:
+  open-graph:
+    title: "Sam Foreman"
+    description: "Parallel Training Techniques"
+    image: "https://github.com/saforem2/parallel-training-slides/blob/main/assets/thumbnail.png?raw=true"
+  twitter-card:
+    site: "@saforem2"
+    creator: "@saforem2"
+    title: "Parallel Training Techniques"
+    image: "https://github.com/saforem2/parallel-training-slides/blob/main/assets/thumbnail.png?raw=true"
   favicon: "./favicon.svg"
   description: "Parallel Training Techniques"
   page-navigation: true
@@ -57,7 +66,7 @@ website:
   repo-actions: [source, edit, issue]
   google-analytics: G-XVM2Y822Y1
   sidebar: false
-  open-graph: true
+  # open-graph: true
   navbar:
     logo: "./favicon.svg"
     background: "#222222"
@@ -92,10 +101,6 @@ website:
         text: "{{< fa brands instagram >}}"
       - href: https://linkedin.com/in/saforem2
         text: "{{< fa brands linkedin >}}"
-  twitter-card:
-    image: "./assets/thumbnail.png"
-    site: "@saforem2"
-    creator: "@saforem2"
 
 format:
   html:

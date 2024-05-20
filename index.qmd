@@ -82,31 +82,44 @@ format:
 
 # Parallel Training Techniques
 
-::: {layout="[60,-5, 35]" layout-valign="center" style="display: flex; align-items:flex-end;"}
+::: {layout="[50,-5, 45]" layout-valign="center" style="display: flex; align-items:flex-end;"}
 
 ::: {.col1}
 
-[[**AI for Science Training Series**](https://github.com/argonne-lcf/llm-workshop)]{.dim-text}  
-[Argonne National Laboratory]{.dim-text}  
+[[Computational HEP Traineeship Summer School 2024](https://indico.cern.ch/event/1405035/timetable/)]{.dim-text style="font-size: 0.8em;"}  
+
+
+[Fermilab]{.dim-text}  
 <br>
 
 [[{{< bi person-badge >}}Sam Foreman](https://samforeman.me)]{style="font-weight: 600;"}  
-[\[2024-03-12\]]{.dim-text style="font-size: 0.8em;"}  
+[\[2024-05-21\]]{.dim-text style="font-size: 0.8em;"}  
 
 <br>
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.7em;"}
 
-- [{{< iconify line-md home-md-twotone-alt >}}`argonne-lcf/`](https://github.com/argonne-lcf/)
-  - [{{< iconify line-md github-loop >}}`ai-science-training-series/`](https://github.com/argonne-lcf/ai-science-training-series)
-    - [{{< iconify line-md document >}}`06_parallel_training_methods/`](https://github.com/argonne-lcf/ai-science-training-series/blob/main/06_parallel_training_methods/README.md)
+<!-- [{{< iconify line-md home-md-twotone-alt >}}`argonne-lcf/`](https://github.com/argonne-lcf/) -->
 
-- [{{< iconify line-md person >}}`saforem2/`](https://github.com/saforem2)
-  - [{{< iconify line-md github-loop >}}`parallel-training-slides`](https://github.com/saforem2/parallel-training-slides)
-    - [{{< iconify line-md image-twotone >}}\[**slides**\]](https://saforem2.github.io/parallel-training-slides/) [{{< iconify line-md github-twotone >}}\[**GitHub**\]](https://github.com/saforem2/parallel-training-slides/)
+<details open><summary><a href="https://github.com/argonne-lcf/"><code>argonne-lcf</code>:</a></summary>
+
+- [{{< iconify line-md github-loop >}}`ai-science-training-series/`](https://github.com/argonne-lcf/ai-science-training-series)
+  - [{{< iconify line-md document >}}`06_parallel_training_methods/`](https://github.com/argonne-lcf/ai-science-training-series/blob/main/06_parallel_training_methods/README.md)
+
+</details>  
+
+<br>
+
+<!-- - [{{< iconify line-md person >}}`saforem2/`](https://github.com/saforem2) -->
+
+<details open><summary> <a href="https://github.com/saforem2/"> <code>saforem2</code> </a> </summary>
+- [{{< iconify line-md github-loop >}}`parallel-training-slides`](https://github.com/saforem2/parallel-training-slides)
+  - [{{< iconify line-md image-twotone >}}\[**slides**\]](https://saforem2.github.io/parallel-training-slides/) [{{< iconify line-md github-twotone >}}\[**GitHub**\]](https://github.com/saforem2/parallel-training-slides/)
   <!-- - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk) -->
   <!-- - [{{< iconify line-md github-loop >}} `llm-workshop-talk`] -->
     <!-- - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk)  -->
+
+</details>
 
 :::
 
@@ -372,10 +385,11 @@ Reduce operation: one rank receives the reduction of input values across ranks
   When randomly selecting, it is important that each worker uses different seeds to ensure they receive unique data
   :::
 
-
 # Broadcast Initial State
 
-- At the start of training (or when loading from a checkpoint), we want all of our workers to be initialized consistently
+- At the start of training (or when loading from a checkpoint), we want all of our workers to be
+  initialized consistently
+
   - **Broadcast** the model and optimizer states from `rank() == 0` worker
 
   ```{mermaid}
@@ -410,8 +424,6 @@ Reduce operation: one rank receives the reduction of input values across ranks
 - Preload data when possible
   - Offloading to a GPU frees CPU cycles for loading the next batch of data
     - **minimize IO latency this way**
-
-
 
 # Model Parallel Training
 

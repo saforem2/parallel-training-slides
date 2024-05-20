@@ -1,7 +1,7 @@
 # Parallel Training Techniques
 Sam Foreman
 [<span class="orcid-green"></span>](https://orcid.org/0000-0002-9981-0876)
-2024-03-12
+2024-05-20
 
 # Parallel Training Techniques
 
@@ -180,6 +180,7 @@ style="width:50.0%" />
 
 - At the start of training (or when loading from a checkpoint), we want
   all of our workers to be initialized consistently
+
   - **Broadcast** the model and optimizer states from `rank() == 0`
     worker
 
