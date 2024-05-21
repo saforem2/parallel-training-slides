@@ -54,6 +54,7 @@ website:
     creator: "@saforem2"
     title: "Parallel Training Techniques"
     image: "https://github.com/saforem2/parallel-training-slides/blob/main/assets/thumbnail.png?raw=true"
+    description: "Parallel Training Techniques"
   favicon: "./favicon.svg"
   description: "Parallel Training Techniques"
   page-navigation: true

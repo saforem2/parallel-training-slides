@@ -20,7 +20,7 @@
   <meta name="generator" content="quarto-1.4.554">
 
   <meta name="author" content="Sam Foreman ">
-  <meta name="dcterms.date" content="2024-05-20">
+  <meta name="dcterms.date" content="2024-05-21">
   <title>Parallel Training Techniques</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -453,16 +453,17 @@
 <meta property="og:image" content="https://github.com/saforem2/parallel-training-slides/blob/main/assets/thumbnail.png?raw=true">
 <meta property="og:site_name" content="Parallel Training Techniques">
 <meta name="twitter:title" content="Parallel Training Techniques">
+<meta name="twitter:description" content="Parallel Training Techniques">
 <meta name="twitter:image" content="https://github.com/saforem2/parallel-training-slides/blob/main/assets/thumbnail.png?raw=true">
 <meta name="twitter:creator" content="@saforem2">
 <meta name="twitter:site" content="@saforem2">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="citation_title" content="Parallel Training Techniques">
 <meta name="citation_author" content="Sam Foreman">
-<meta name="citation_publication_date" content="2024-05-20">
-<meta name="citation_cover_date" content="2024-05-20">
+<meta name="citation_publication_date" content="2024-05-21">
+<meta name="citation_cover_date" content="2024-05-21">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-05-20">
+<meta name="citation_online_date" content="2024-05-21">
 <meta name="citation_fulltext_html_url" content="https://saforem2.github.io/parallel-training-slides">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Progress on (g-2)_\mu from lattice QCD;,citation_author=Hartmut Wittig;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2306.04165;">
@@ -502,11 +503,11 @@
     </div>
 </div>
 
-  <p class="date">2024-05-20</p>
+  <p class="date">2024-05-21</p>
 </section>
 <section id="parallel-training-techniques" class="title-slide slide level1 center">
 <h1>Parallel Training Techniques</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[50,-5, 45]">
+<div class="quarto-layout-panel" data-layout="[50,-5, 45]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><span class="dim-text" style="font-size: 0.8em;"><a href="https://indico.cern.ch/event/1405035/timetable/">Computational HEP Traineeship Summer School 2024</a></span></p>
@@ -802,7 +803,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-3" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
+<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -829,7 +830,7 @@ Figure&nbsp;10
 
 <section id="data-parallel-training-4" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[45,-5,50]">
+<div class="quarto-layout-panel" data-layout="[45,-5,50]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <ul>
@@ -958,7 +959,7 @@ Figure&nbsp;11
 
 <section id="model-parallel-training" class="title-slide slide level1 center">
 <h1>Model Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
+<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>
@@ -996,7 +997,7 @@ Figure&nbsp;12: <img data-src="https://saforem2.github.io/distributed-training-s
 <ol type="1">
 <li>Compute <span class="math inline">y_{0} = w_{0} * x_{0}</span> and send to <span class="math inline">\longrightarrow</span> <code>GPU1</code></li>
 <li>Compute <span class="math inline">y_{1} = y_{0} + w_{1} * x_{1}</span> and send to <span class="math inline">\longrightarrow</span> <code>GPU2</code></li>
-<li>Compute <span class="math inline">y = y_{1} * w_{2} * x_{2}</span> ✅</li>
+<li>Compute <span class="math inline">y = y_{1} + w_{2} * x_{2}</span> ✅</li>
 </ol>
 <div class="cell" data-reveal="true" data-layout-align="center">
 <div class="cell-output-display">
@@ -1135,7 +1136,7 @@ Figure&nbsp;12: <img data-src="https://saforem2.github.io/distributed-training-s
 <section>
 <section id="data-parallel-training-6" class="title-slide slide level1 center">
 <h1>Data Parallel Training</h1>
-<div class="quarto-layout-panel" style="display: flex; align-items:flex-end;" data-layout="[60,40]">
+<div class="quarto-layout-panel" data-layout="[60,40]" style="display: flex; align-items:flex-end;">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="col1 quarto-layout-cell" style="flex-basis: 60.0%;justify-content: flex-start;">
 <ul>

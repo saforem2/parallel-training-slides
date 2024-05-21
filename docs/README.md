@@ -1,7 +1,7 @@
 # Parallel Training Techniques
 Sam Foreman
 [<span class="orcid-green"></span>](https://orcid.org/0000-0002-9981-0876)
-2024-05-20
+2024-05-21
 
 # Parallel Training Techniques
 
@@ -231,7 +231,7 @@ $$y = \sum_{i} w_{i} * x_{i} = w_0 * x_0 + w_1 * x_1 + w_2 * x_2$$
 1.  Compute $y_{0} = w_{0} * x_{0}$ and send to $\longrightarrow$ `GPU1`
 2.  Compute $y_{1} = y_{0} + w_{1} * x_{1}$ and send to
     $\longrightarrow$ `GPU2`
-3.  Compute $y = y_{1} * w_{2} * x_{2}$ ✅
+3.  Compute $y = y_{1} + w_{2} * x_{2}$ ✅
 
 ``` mermaid
 flowchart LR
